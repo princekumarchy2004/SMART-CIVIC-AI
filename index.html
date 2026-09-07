@@ -3,280 +3,775 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SMART CIVI AI | Integrated Urban Governance Platform</title>
+    <title>SMART CIVI AI — Integrated Urban Operations Center</title>
+    <!-- Chart.js for real-time telemetry graphics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
-            --primary: #0284c7;
-            --primary-dark: #0369a1;
-            --secondary: #10b981;
+            --bg-dark: #0a0e17;
+            --bg-panel: #131b2e;
+            --bg-card: #1c273e;
+            --border-color: #2a3b5c;
+            --primary: #38bdf8;
+            --primary-glow: rgba(56, 189, 248, 0.25);
+            --success: #10b981;
+            --warning: #f59e0b;
             --danger: #ef4444;
-            --bg-dark: #0f172a;
-            --bg-card: #1e293b;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --border: #334155;
+            --text-main: #f1f5f9;
+            --text-sub: #94a3b8;
+            --accent: #8b5cf6;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Roboto, -apple-system, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
         }
 
         body {
             background-color: var(--bg-dark);
             color: var(--text-main);
-            line-height: 1.6;
-        }
-
-        header {
-            background: rgba(15, 23, 42, 0.9);
-            backdrop-filter: blur(10px);
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 2rem;
+            height: 100vh;
+            overflow: hidden;
         }
 
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--text-main);
+        /* Sidebar Navigation */
+        aside {
+            width: 260px;
+            background: var(--bg-panel);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 1.5rem 1rem;
+            z-index: 100;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.25rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            color: var(--primary);
+        }
+
+        .brand-badge {
+            background: rgba(56, 189, 248, 0.15);
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            font-size: 0.65rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .nav-menu {
+            list-style: none;
+            margin-top: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .nav-item {
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            color: var(--text-sub);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: var(--bg-card);
+            color: var(--primary);
+            border-left: 3px solid var(--primary);
+        }
+
+        .system-status {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--success);
+            padding: 0.8rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            color: var(--success);
             display: flex;
             align-items: center;
             gap: 8px;
         }
 
-        .logo span {
-            color: var(--primary);
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--success);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--success);
+            animation: pulse 1.5s infinite;
         }
 
-        nav a {
-            color: var(--text-muted);
-            text-decoration: none;
-            margin-left: 1.5rem;
-            transition: color 0.3s;
+        @keyframes pulse {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(1.2); }
+            100% { opacity: 1; transform: scale(1); }
         }
 
-        nav a:hover {
-            color: var(--primary);
-        }
-
-        .hero {
-            padding: 8rem 2rem 4rem;
-            max-width: 1200px;
-            margin: 0 auto;
-            text-align: center;
-        }
-
-        .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(to right, #38bdf8, #34d399);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .hero p {
-            font-size: 1.25rem;
-            color: var(--text-muted);
-            max-width: 700px;
-            margin: 0 auto 2rem;
-        }
-
-        .modules-grid {
-            max-width: 1200px;
-            margin: 2rem auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-            padding: 0 2rem;
-        }
-
-        .card {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.5rem;
-            transition: transform 0.3s, border-color 0.3s;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary);
-        }
-
-        .card-icon {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-        }
-
-        .card h3 {
-            margin-bottom: 0.5rem;
-            color: var(--text-main);
-        }
-
-        .card p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-        }
-
-        .demo-section {
-            max-width: 1200px;
-            margin: 4rem auto;
-            padding: 0 2rem;
-        }
-
-        .demo-container {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 2rem;
-        }
-
-        .demo-controls {
+        /* Main Workspace */
+        main {
+            flex: 1;
             display: flex;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: background-color 0.3s;
-        }
-
-        .btn:hover {
-            background-color: var(--primary-dark);
-        }
-
-        .console-output {
-            background-color: #090d16;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 1rem;
-            font-family: monospace;
-            color: #38bdf8;
-            min-height: 120px;
-            max-height: 200px;
+            flex-direction: column;
             overflow-y: auto;
         }
 
-        footer {
-            border-top: 1px solid var(--border);
-            text-align: center;
+        header {
+            background: var(--bg-panel);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-title h1 {
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .header-title p {
+            font-size: 0.8rem;
+            color: var(--text-sub);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--bg-card);
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+            border: 1px solid var(--border-color);
+        }
+
+        .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.85rem;
+        }
+
+        /* Dashboard Content Area */
+        .content {
+            padding: 1.5rem 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        /* Top Metric Cards */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+        }
+
+        .metric-card {
+            background: var(--bg-panel);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+        }
+
+        .metric-card.blue::before { background: var(--primary); }
+        .metric-card.green::before { background: var(--success); }
+        .metric-card.yellow::before { background: var(--warning); }
+        .metric-card.purple::before { background: var(--accent); }
+
+        .metric-label {
+            font-size: 0.8rem;
+            color: var(--text-sub);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .metric-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .metric-sub {
+            font-size: 0.75rem;
+            color: var(--success);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Map and Controls Split Grid */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 1200px) {
+            .main-grid { grid-template-columns: 1fr; }
+        }
+
+        .map-wrapper {
+            background: var(--bg-panel);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .panel-header h3 {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        /* Interactive Canvas Map */
+        #cityMap {
+            width: 100%;
+            height: 360px;
+            background: #0d131f;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Interactive Action Panel */
+        .actions-wrapper {
+            background: var(--bg-panel);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .btn-action {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-card);
+            color: var(--text-main);
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.2s;
+        }
+
+        .btn-action:hover {
+            border-color: var(--primary);
+            background: #23314e;
+            transform: translateY(-2px);
+        }
+
+        .btn-action.danger:hover {
+            border-color: var(--danger);
+        }
+
+        /* Live Incident Table */
+        .table-wrapper {
+            background: var(--bg-panel);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.25rem;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.85rem;
+        }
+
+        th {
+            color: var(--text-sub);
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+            font-weight: 600;
+        }
+
+        td {
+            padding: 0.85rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        tr:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .badge.pothole { background: rgba(239, 68, 68, 0.2); color: var(--danger); }
+        .badge.waste { background: rgba(245, 158, 11, 0.2); color: var(--warning); }
+        .badge.emergency { background: rgba(16, 185, 129, 0.2); color: var(--success); }
+        .badge.nlp { background: rgba(139, 92, 246, 0.2); color: var(--accent); }
+
+        /* Terminal Console Overlay */
+        .terminal {
+            background: #05080e;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: "Courier New", Courier, monospace;
+            font-size: 0.8rem;
+            color: #38bdf8;
+            height: 140px;
+            overflow-y: auto;
+        }
+
+        /* Modal Popup */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.75);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-card {
+            background: var(--bg-panel);
+            border: 1px solid var(--primary);
+            box-shadow: 0 0 20px var(--primary-glow);
+            border-radius: 12px;
             padding: 2rem;
-            color: var(--text-muted);
-            margin-top: 4rem;
+            width: 450px;
+            max-width: 90%;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-close {
+            cursor: pointer;
+            color: var(--text-sub);
+            font-size: 1.2rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group label {
+            font-size: 0.8rem;
+            color: var(--text-sub);
+        }
+
+        .form-group input, .form-group textarea {
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 0.6rem;
+            color: var(--text-main);
+            outline: none;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            border-color: var(--primary);
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="nav-container">
-            <div class="logo">⚡ SMART CIVI <span>AI</span></div>
-            <nav>
-                <a href="#modules">Modules</a>
-                <a href="#simulation">Live Simulation</a>
-                <a href="#about">About</a>
-            </nav>
-        </div>
-    </header>
-
-    <section class="hero">
-        <h1>Integrated Urban Governance Ecosystem</h1>
-        <p>Leveraging AI, IoT telemetry, and real-time data analytics to transform municipal management, emergency dispatch, and public sanitation.</p>
-    </section>
-
-    <section class="modules-grid" id="modules">
-        <div class="card">
-            <div class="card-icon">🛣️</div>
-            <h3>Infrastructure & Road Care</h3>
-            <p>Computer vision processes vehicular video feeds and citizen uploads to detect potholes, measure severity, and auto-dispatch work orders.</p>
-        </div>
-        <div class="card">
-            <div class="card-icon">🗑️</div>
-            <h3>Smart Waste Operations</h3>
-            <p>Ultrasonic IoT sensors monitor bin levels, predict overflows, and recalculate garbage truck collection routes dynamically.</p>
-        </div>
-        <div class="card">
-            <div class="card-icon">🚑</div>
-            <h3>Healthcare & Emergency Dispatch</h3>
-            <p>GIS integration clears green corridors via smart traffic signal manipulation and syncs real-time hospital bed availability.</p>
-        </div>
-        <div class="card">
-            <div class="card-icon">📢</div>
-            <h3>Unified Civic Reporting</h3>
-            <p>NLP algorithms automatically categorize, deduplicate, and route citizen issues to appropriate municipal departments.</p>
-        </div>
-    </section>
-
-    <section class="demo-section" id="simulation">
-        <h2 style="margin-bottom: 1rem;">Telemetry Simulation Console</h2>
-        <div class="demo-container">
-            <div class="demo-controls">
-                <button class="btn" onclick="runPotholeScan()">Scan Road Feed (CV)</button>
-                <button class="btn" onclick="checkWasteSensors()">Check Bin Levels (IoT)</button>
-                <button class="btn" onclick="triggerEmergency()">Dispatch Ambulance (GIS)</button>
+    <!-- Sidebar Navigation -->
+    <aside>
+        <div>
+            <div class="brand">
+                ⚡ SMART CIVI <span class="brand-badge">AI v2.4</span>
             </div>
-            <div class="console-output" id="console">
-                > System initialized. Awaiting municipal telemetry input...
-            </div>
+            <ul class="nav-menu">
+                <li class="nav-item active">📊 Operations Center</li>
+                <li class="nav-item">🛣️ Road Vision Telemetry</li>
+                <li class="nav-item">🗑️ IoT Waste Network</li>
+                <li class="nav-item">🚑 Green Corridor GIS</li>
+                <li class="nav-item">📢 Citizen NLP Tickets</li>
+                <li class="nav-item">⚙️ System Governance</li>
+            </ul>
         </div>
-    </section>
+        <div class="system-status">
+            <div class="pulse-dot"></div>
+            <span>Telemetry Grid: Active</span>
+        </div>
+    </aside>
 
-    <footer>
-        <p>&copy; 2026 SMART CIVI AI Platform. Designed for Next-Gen Urban Management.</p>
-    </footer>
+    <!-- Main Section -->
+    <main>
+        <header>
+            <div class="header-title">
+                <h1>Integrated Urban Governance Command</h1>
+                <p>Real-Time AI Processing & Sensor Data Fusion Panel</p>
+            </div>
+            <div class="user-profile">
+                <div class="avatar">HQ</div>
+                <div style="font-size: 0.85rem;">
+                    <div style="font-weight: 600;">Municipal Admin</div>
+                    <div style="color: var(--text-sub); font-size: 0.75rem;">Sector 4 Command</div>
+                </div>
+            </div>
+        </header>
+
+        <div class="content">
+
+            <!-- Realtime Metrics -->
+            <div class="metrics-grid">
+                <div class="metric-card blue">
+                    <span class="metric-label">Road Anomalies Detected</span>
+                    <span class="metric-value" id="val-potholes">142</span>
+                    <span class="metric-sub">▲ 12 Auto-Routed Today</span>
+                </div>
+                <div class="metric-card green">
+                    <span class="metric-label">IoT Waste Bin Status</span>
+                    <span class="metric-value" id="val-bins">94.2%</span>
+                    <span class="metric-sub">✓ Routes Optimized</span>
+                </div>
+                <div class="metric-card yellow">
+                    <span class="metric-label">Green Corridors Active</span>
+                    <span class="metric-value" id="val-corridors">3</span>
+                    <span class="metric-sub">🚑 Response Time: -4.2 min</span>
+                </div>
+                <div class="metric-card purple">
+                    <span class="metric-label">NLP Ticket Deduplication</span>
+                    <span class="metric-value" id="val-tickets">89%</span>
+                    <span class="metric-sub">⚡ 1,240 Issues Consolidated</span>
+                </div>
+            </div>
+
+            <!-- Map & Controls -->
+            <div class="main-grid">
+                <!-- Interactive Map Canvas -->
+                <div class="map-wrapper">
+                    <div class="panel-header">
+                        <h3>Geospatial Telemetry Layer</h3>
+                        <span style="font-size: 0.75rem; color: var(--text-sub);">Interactive Live Canvas Grid</span>
+                    </div>
+                    <canvas id="cityMap"></canvas>
+                </div>
+
+                <!-- Simulation Controls -->
+                <div class="actions-wrapper">
+                    <div class="panel-header">
+                        <h3>Interactive AI Triggers</h3>
+                    </div>
+
+                    <button class="btn-action" onclick="triggerPotholeEvent()">
+                        <span>🛣️ Scan Visual Feed (Pothole)</span>
+                        <span>→</span>
+                    </button>
+
+                    <button class="btn-action" onclick="triggerWasteEvent()">
+                        <span>🗑️ Poll Ultrasonic Waste Bins</span>
+                        <span>→</span>
+                    </button>
+
+                    <button class="btn-action danger" onclick="triggerEmergencyEvent()">
+                        <span>🚑 Activate Green Corridor</span>
+                        <span>→</span>
+                    </button>
+
+                    <button class="btn-action" onclick="openCivicModal()">
+                        <span>📢 Submit NLP Citizen Report</span>
+                        <span>+</span>
+                    </button>
+
+                    <!-- Realtime Telemetry Console -->
+                    <div style="margin-top: 0.5rem;">
+                        <span style="font-size: 0.75rem; color: var(--text-sub); font-weight: 600;">OPERATIONAL EVENT LOG</span>
+                        <div class="terminal" id="terminalLog">
+                            [00:00:01] CIVI AI Telemetry Hub initialized.<br>
+                            [00:00:02] Connected to 420 IoT nodes & CCTV feeds.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Incident Log Table -->
+            <div class="table-wrapper">
+                <div class="panel-header" style="margin-bottom: 1rem;">
+                    <h3>Real-Time Dispatch & Incident Log</h3>
+                    <span style="font-size: 0.75rem; color: var(--text-sub);">Auto-Prioritized by AI Matrix</span>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Category</th>
+                            <th>Location / Coordinates</th>
+                            <th>AI Detection Metric</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="incidentTableBody">
+                        <tr>
+                            <td>#INC-8092</td>
+                            <td><span class="badge pothole">Road Care</span></td>
+                            <td>28.6139° N, 77.2090° E</td>
+                            <td>Depth: 7.2 cm | Severity High</td>
+                            <td><span style="color: var(--warning);">Crew Dispatched</span></td>
+                            <td><button style="background:transparent; border:1px solid var(--border-color); color:var(--text-sub); padding:2px 8px; border-radius:4px; cursor:pointer;" onclick="viewDetails('#INC-8092')">Details</button></td>
+                        </tr>
+                        <tr>
+                            <td>#INC-8091</td>
+                            <td><span class="badge waste">Smart Waste</span></td>
+                            <td>Sector 4 - Commercial Receptacle #12</td>
+                            <td>Fill Level: 96% | Overflow in 18 min</td>
+                            <td><span style="color: var(--primary);">Route Rerouted</span></td>
+                            <td><button style="background:transparent; border:1px solid var(--border-color); color:var(--text-sub); padding:2px 8px; border-radius:4px; cursor:pointer;" onclick="viewDetails('#INC-8091')">Details</button></td>
+                        </tr>
+                        <tr>
+                            <td>#INC-8090</td>
+                            <td><span class="badge emergency">Emergency</span></td>
+                            <td>Main Arterial Ave → Central Hospital</td>
+                            <td>Signal override: 4 Green Lights</td>
+                            <td><span style="color: var(--success);">Corridor Active</span></td>
+                            <td><button style="background:transparent; border:1px solid var(--border-color); color:var(--text-sub); padding:2px 8px; border-radius:4px; cursor:pointer;" onclick="viewDetails('#INC-8090')">Details</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Modal Form for Citizen Issue Submission -->
+    <div class="modal-overlay" id="civicModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>Submit Citizen Complaint (NLP Engine)</h3>
+                <span class="modal-close" onclick="closeCivicModal()">&times;</span>
+            </div>
+            <div class="form-group">
+                <label>Issue Description (Natural Language)</label>
+                <textarea id="issueText" rows="3" placeholder="e.g. Water leak near the main park and streetlight broken..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>Citizen Contact / Email</label>
+                <input type="text" id="citizenContact" placeholder="citizen@city.gov">
+            </div>
+            <button class="btn-action" style="background: var(--primary); color: #000; justify-content: center; margin-top: 0.5rem;" onclick="processNLPReport()">
+                Process & Deduplicate Issue
+            </button>
+        </div>
+    </div>
 
     <script>
-        function log(message) {
-            const consoleEl = document.getElementById('console');
-            const timestamp = new Date().toLocaleTimeString();
-            consoleEl.innerHTML += `<br>[${timestamp}] ${message}`;
-            consoleEl.scrollTop = consoleEl.scrollHeight;
+        // Interactive Canvas Map System
+        const canvas = document.getElementById('cityMap');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+            drawMap();
         }
 
-        function runPotholeScan() {
-            log("⚡ Running Computer Vision scan on Fleet-Cam #402...");
-            setTimeout(() => {
-                log("⚠️ Hazard Detected: Pothole (Severity: High, Depth: 8.5cm).");
-                log("📍 GPS Coordinates: 28.6139° N, 77.2090° E. Work order #WO-9021 generated & routed.");
-            }, 800);
+        let mapPoints = [
+            { x: 120, y: 80, type: 'pothole', label: 'Pothole #102' },
+            { x: 280, y: 190, type: 'waste', label: 'Bin #88' },
+            { x: 420, y: 120, type: 'emergency', label: 'Ambulance #04' }
+        ];
+
+        function drawMap() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw City Grid Roads
+            ctx.strokeStyle = '#1e2d4a';
+            ctx.lineWidth = 2;
+            for(let i = 0; i < canvas.width; i += 40) {
+                ctx.beginPath();
+                ctx.moveTo(i, 0);
+                ctx.lineTo(i, canvas.height);
+                ctx.stroke();
+            }
+            for(let j = 0; j < canvas.height; j += 40) {
+                ctx.beginPath();
+                ctx.moveTo(0, j);
+                ctx.lineTo(canvas.width, j);
+                ctx.stroke();
+            }
+
+            // Draw Dynamic Telemetry Markers
+            mapPoints.forEach(pt => {
+                ctx.beginPath();
+                ctx.arc(pt.x, pt.y, 8, 0, Math.PI * 2);
+                if(pt.type === 'pothole') ctx.fillStyle = '#ef4444';
+                else if(pt.type === 'waste') ctx.fillStyle = '#f59e0b';
+                else if(pt.type === 'emergency') ctx.fillStyle = '#10b981';
+                else ctx.fillStyle = '#8b5cf6';
+                ctx.fill();
+
+                // Pulse Glow
+                ctx.beginPath();
+                ctx.arc(pt.x, pt.y, 14, 0, Math.PI * 2);
+                ctx.strokeStyle = ctx.fillStyle;
+                ctx.lineWidth = 1;
+                ctx.stroke();
+
+                // Label
+                ctx.fillStyle = '#94a3b8';
+                ctx.font = '10px sans-serif';
+                ctx.fillText(pt.label, pt.x + 12, pt.y + 4);
+            });
         }
 
-        function checkWasteSensors() {
-            log("⚡ Polling 128 Ultrasonic IoT Waste Sensors across Sector 4...");
-            setTimeout(() => {
-                log("📊 Receptacle #88 capacity reached 92%. Overflow predicted in 35 mins.");
-                log("🚚 Dynamic route recalculation sent to Collection Unit #12.");
-            }, 800);
+        window.addEventListener('resize', resizeCanvas);
+        setTimeout(resizeCanvas, 100);
+
+        // Terminal Output Helper
+        function logTerminal(msg) {
+            const term = document.getElementById('terminalLog');
+            const time = new Date().toLocaleTimeString();
+            term.innerHTML += `<br>[${time}] ${msg}`;
+            term.scrollTop = term.scrollHeight;
         }
 
-        function triggerEmergency() {
-            log("⚡ Emergency SOS Received: Priority 1 Patient Transport.");
-            setTimeout(() => {
-                log("🚦 Green Corridor activated: 5 sequential traffic lights synced.");
-                log("🏥 Hospital Sync: City Central Hospital (Bed #B-104 reserved).");
-            }, 800);
+        // Interactive Button Actions
+        function triggerPotholeEvent() {
+            const countEl = document.getElementById('val-potholes');
+            countEl.innerText = parseInt(countEl.innerText) + 1;
+            
+            const randomX = Math.floor(Math.random() * (canvas.width - 60)) + 30;
+            const randomY = Math.floor(Math.random() * (canvas.height - 60)) + 30;
+            const newId = Math.floor(Math.random() * 800) + 100;
+
+            mapPoints.push({ x: randomX, y: randomY, type: 'pothole', label: `Pothole #${newId}` });
+            drawMap();
+
+            logTerminal(`⚠️ Computer Vision: Pothole detected (Depth: 6.8cm). Auto-generating WO-#${newId}`);
+
+            // Insert into Incident Table
+            const table = document.getElementById('incidentTableBody');
+            const row = table.insertRow(0);
+            row.innerHTML = `
+                <td>#INC-${newId}</td>
+                <td><span class="badge pothole">Road Care</span></td>
+                <td>28.614${newId/1000}° N, 77.208${newId/1000}° E</td>
+                <td>Depth: 6.8 cm | Auto-Detected</td>
+                <td><span style="color: var(--danger);">Pending Dispatch</span></td>
+                <td><button style="background:transparent; border:1px solid var(--border-color); color:var(--text-sub); padding:2px 8px; border-radius:4px; cursor:pointer;" onclick="viewDetails('#INC-${newId}')">Details</button></td>
+            `;
+        }
+
+        function triggerWasteEvent() {
+            logTerminal(`🗑️ IoT Ultrasonic Array: Receptacle #104 filled past 90% threshold.`);
+            logTerminal(`🚚 Recalculating route for Waste Truck #12 via Dynamic Dijkstra AI.`);
+            
+            const randomX = Math.floor(Math.random() * (canvas.width - 60)) + 30;
+            const randomY = Math.floor(Math.random() * (canvas.height - 60)) + 30;
+
+            mapPoints.push({ x: randomX, y: randomY, type: 'waste', label: `Bin Fill Alert` });
+            drawMap();
+        }
+
+        function triggerEmergencyEvent() {
+            const countEl = document.getElementById('val-corridors');
+            countEl.innerText = parseInt(countEl.innerText) + 1;
+
+            logTerminal(`🚨 PRIORITY 1: Emergency SOS Received.`);
+            logTerminal(`🚦 GIS Traffic Override: Clearing 5 sequential signals along Main St.`);
+
+            const randomX = Math.floor(Math.random() * (canvas.width - 60)) + 30;
+            const randomY = Math.floor(Math.random() * (canvas.height - 60)) + 30;
+
+            mapPoints.push({ x: randomX, y: randomY, type: 'emergency', label: `Ambulance Priority` });
+            drawMap();
+        }
+
+        // Modal Handlers
+        function openCivicModal() {
+            document.getElementById('civicModal').style.display = 'flex';
+        }
+
+        function closeCivicModal() {
+            document.getElementById('civicModal').style.display = 'none';
+        }
+
+        function processNLPReport() {
+            const text = document.getElementById('issueText').value;
+            if(!text) return alert('Please enter issue description.');
+
+            closeCivicModal();
+            logTerminal(`📢 NLP Processing: "${text.substring(0, 30)}..."`);
+            logTerminal(`⚡ Issue categorized, deduplicated (Similarity score: 0.92), and logged.`);
+
+            const newId = Math.floor(Math.random() * 800) + 100;
+            const table = document.getElementById('incidentTableBody');
+            const row = table.insertRow(0);
+            row.innerHTML = `
+                <td>#INC-${newId}</td>
+                <td><span class="badge nlp">Civic NLP</span></td>
+                <td>Citizen Mobile Tag</td>
+                <td>NLP Categorized: Infrastructure</td>
+                <td><span style="color: var(--accent);">Deduplicated</span></td>
+                <td><button style="background:transparent; border:1px solid var(--border-color); color:var(--text-sub); padding:2px 8px; border-radius:4px; cursor:pointer;" onclick="viewDetails('#INC-${newId}')">Details</button></td>
+            `;
+
+            document.getElementById('issueText').value = '';
+        }
+
+        function viewDetails(id) {
+            alert(`Opening full telemetry diagnosis modal for ${id}.\nStatus: Verified by AI Engine.`);
         }
     </script>
 </body>
