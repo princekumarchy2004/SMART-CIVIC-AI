@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SMART CIVI AI — Integrated Urban Operations Center</title>
-    <!-- Chart.js for real-time telemetry graphics -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>SMART CIVI AI — Fully Interactive Urban Command Platform</title>
     <style>
         :root {
             --bg-dark: #0a0e17;
@@ -27,6 +25,7 @@
             margin: 0;
             padding: 0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            user-select: none;
         }
 
         body {
@@ -55,8 +54,8 @@
             gap: 12px;
             font-size: 1.25rem;
             font-weight: 800;
-            letter-spacing: 0.5px;
             color: var(--primary);
+            cursor: pointer;
         }
 
         .brand-badge {
@@ -89,7 +88,12 @@
             transition: all 0.2s;
         }
 
-        .nav-item:hover, .nav-item.active {
+        .nav-item:hover {
+            background: var(--bg-card);
+            color: var(--text-main);
+        }
+
+        .nav-item.active {
             background: var(--bg-card);
             color: var(--primary);
             border-left: 3px solid var(--primary);
@@ -105,6 +109,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            cursor: pointer;
         }
 
         .pulse-dot {
@@ -157,6 +162,12 @@
             padding: 0.5rem 1rem;
             border-radius: 30px;
             border: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .user-profile:hover {
+            border-color: var(--primary);
         }
 
         .avatar {
@@ -171,12 +182,16 @@
             font-size: 0.85rem;
         }
 
-        /* Dashboard Content Area */
-        .content {
+        /* Dashboard Views */
+        .tab-view {
+            display: none;
             padding: 1.5rem 2rem;
-            display: flex;
             flex-direction: column;
             gap: 1.5rem;
+        }
+
+        .tab-view.active {
+            display: flex;
         }
 
         /* Top Metric Cards */
@@ -195,7 +210,13 @@
             flex-direction: column;
             gap: 0.5rem;
             position: relative;
-            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--primary);
         }
 
         .metric-card::before {
@@ -232,7 +253,7 @@
             gap: 4px;
         }
 
-        /* Map and Controls Split Grid */
+        /* Main Split Grid */
         .main-grid {
             display: grid;
             grid-template-columns: 2fr 1fr;
@@ -243,11 +264,11 @@
             .main-grid { grid-template-columns: 1fr; }
         }
 
-        .map-wrapper {
+        .map-wrapper, .actions-wrapper, .table-wrapper, .panel-card {
             background: var(--bg-panel);
             border: 1px solid var(--border-color);
             border-radius: 12px;
-            padding: 1rem;
+            padding: 1.25rem;
             display: flex;
             flex-direction: column;
             gap: 1rem;
@@ -264,26 +285,17 @@
             font-weight: 600;
         }
 
-        /* Interactive Canvas Map */
+        /* Canvas Map */
         #cityMap {
             width: 100%;
             height: 360px;
             background: #0d131f;
             border-radius: 8px;
             border: 1px solid var(--border-color);
+            cursor: crosshair;
         }
 
-        /* Interactive Action Panel */
-        .actions-wrapper {
-            background: var(--bg-panel);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 1.25rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
+        /* Action Buttons */
         .btn-action {
             width: 100%;
             padding: 0.85rem 1rem;
@@ -310,15 +322,7 @@
             border-color: var(--danger);
         }
 
-        /* Live Incident Table */
-        .table-wrapper {
-            background: var(--bg-panel);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 1.25rem;
-            overflow-x: auto;
-        }
-
+        /* Live Table */
         table {
             width: 100%;
             border-collapse: collapse;
@@ -339,7 +343,8 @@
         }
 
         tr:hover {
-            background: rgba(255, 255, 255, 0.02);
+            background: rgba(255, 255, 255, 0.03);
+            cursor: pointer;
         }
 
         .badge {
@@ -355,7 +360,6 @@
         .badge.emergency { background: rgba(16, 185, 129, 0.2); color: var(--success); }
         .badge.nlp { background: rgba(139, 92, 246, 0.2); color: var(--accent); }
 
-        /* Terminal Console Overlay */
         .terminal {
             background: #05080e;
             border: 1px solid var(--border-color);
@@ -368,7 +372,7 @@
             overflow-y: auto;
         }
 
-        /* Modal Popup */
+        /* Modal Overlay */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -388,7 +392,7 @@
             box-shadow: 0 0 20px var(--primary-glow);
             border-radius: 12px;
             padding: 2rem;
-            width: 450px;
+            width: 480px;
             max-width: 90%;
             display: flex;
             flex-direction: column;
@@ -404,7 +408,7 @@
         .modal-close {
             cursor: pointer;
             color: var(--text-sub);
-            font-size: 1.2rem;
+            font-size: 1.4rem;
         }
 
         .form-group {
@@ -418,7 +422,7 @@
             color: var(--text-sub);
         }
 
-        .form-group input, .form-group textarea {
+        .form-group input, .form-group textarea, .form-group select {
             background: var(--bg-dark);
             border: 1px solid var(--border-color);
             border-radius: 6px;
@@ -427,7 +431,7 @@
             outline: none;
         }
 
-        .form-group input:focus, .form-group textarea:focus {
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
             border-color: var(--primary);
         }
     </style>
@@ -437,32 +441,32 @@
     <!-- Sidebar Navigation -->
     <aside>
         <div>
-            <div class="brand">
+            <div class="brand" onclick="switchTab('ops')">
                 ⚡ SMART CIVI <span class="brand-badge">AI v2.4</span>
             </div>
             <ul class="nav-menu">
-                <li class="nav-item active">📊 Operations Center</li>
-                <li class="nav-item">🛣️ Road Vision Telemetry</li>
-                <li class="nav-item">🗑️ IoT Waste Network</li>
-                <li class="nav-item">🚑 Green Corridor GIS</li>
-                <li class="nav-item">📢 Citizen NLP Tickets</li>
-                <li class="nav-item">⚙️ System Governance</li>
+                <li class="nav-item active" id="nav-ops" onclick="switchTab('ops')">📊 Operations Center</li>
+                <li class="nav-item" id="nav-road" onclick="switchTab('road')">🛣️ Road Vision Telemetry</li>
+                <li class="nav-item" id="nav-waste" onclick="switchTab('waste')">🗑️ IoT Waste Network</li>
+                <li class="nav-item" id="nav-emergency" onclick="switchTab('emergency')">🚑 Green Corridor GIS</li>
+                <li class="nav-item" id="nav-nlp" onclick="switchTab('nlp')">📢 Citizen NLP Tickets</li>
+                <li class="nav-item" id="nav-gov" onclick="switchTab('gov')">⚙️ System Governance</li>
             </ul>
         </div>
-        <div class="system-status">
+        <div class="system-status" onclick="openModal('System Telemetry Health: 100% Operational\nAll 420 Node Sensors Online')">
             <div class="pulse-dot"></div>
             <span>Telemetry Grid: Active</span>
         </div>
     </aside>
 
-    <!-- Main Section -->
+    <!-- Main Workspace -->
     <main>
         <header>
             <div class="header-title">
-                <h1>Integrated Urban Governance Command</h1>
-                <p>Real-Time AI Processing & Sensor Data Fusion Panel</p>
+                <h1 id="headerTitle">Integrated Urban Governance Command</h1>
+                <p id="headerSub">Real-Time AI Processing & Sensor Data Fusion Panel</p>
             </div>
-            <div class="user-profile">
+            <div class="user-profile" onclick="openModal('Admin Profile: Keshav (Sector 4 Operations Lead)\nSession Auth: Active token #AUTH-9921')">
                 <div class="avatar">HQ</div>
                 <div style="font-size: 0.85rem;">
                     <div style="font-weight: 600;">Municipal Admin</div>
@@ -471,44 +475,41 @@
             </div>
         </header>
 
-        <div class="content">
+        <!-- VIEW 1: OPERATIONS CENTER (MAIN DASHBOARD) -->
+        <div class="tab-view active" id="view-ops">
 
-            <!-- Realtime Metrics -->
             <div class="metrics-grid">
-                <div class="metric-card blue">
+                <div class="metric-card blue" onclick="switchTab('road')">
                     <span class="metric-label">Road Anomalies Detected</span>
                     <span class="metric-value" id="val-potholes">142</span>
                     <span class="metric-sub">▲ 12 Auto-Routed Today</span>
                 </div>
-                <div class="metric-card green">
+                <div class="metric-card green" onclick="switchTab('waste')">
                     <span class="metric-label">IoT Waste Bin Status</span>
                     <span class="metric-value" id="val-bins">94.2%</span>
                     <span class="metric-sub">✓ Routes Optimized</span>
                 </div>
-                <div class="metric-card yellow">
+                <div class="metric-card yellow" onclick="switchTab('emergency')">
                     <span class="metric-label">Green Corridors Active</span>
                     <span class="metric-value" id="val-corridors">3</span>
                     <span class="metric-sub">🚑 Response Time: -4.2 min</span>
                 </div>
-                <div class="metric-card purple">
+                <div class="metric-card purple" onclick="switchTab('nlp')">
                     <span class="metric-label">NLP Ticket Deduplication</span>
                     <span class="metric-value" id="val-tickets">89%</span>
                     <span class="metric-sub">⚡ 1,240 Issues Consolidated</span>
                 </div>
             </div>
 
-            <!-- Map & Controls -->
             <div class="main-grid">
-                <!-- Interactive Map Canvas -->
                 <div class="map-wrapper">
                     <div class="panel-header">
                         <h3>Geospatial Telemetry Layer</h3>
-                        <span style="font-size: 0.75rem; color: var(--text-sub);">Interactive Live Canvas Grid</span>
+                        <span style="font-size: 0.75rem; color: var(--text-sub);">Click Map to Add Live Node</span>
                     </div>
                     <canvas id="cityMap"></canvas>
                 </div>
 
-                <!-- Simulation Controls -->
                 <div class="actions-wrapper">
                     <div class="panel-header">
                         <h3>Interactive AI Triggers</h3>
@@ -534,7 +535,6 @@
                         <span>+</span>
                     </button>
 
-                    <!-- Realtime Telemetry Console -->
                     <div style="margin-top: 0.5rem;">
                         <span style="font-size: 0.75rem; color: var(--text-sub); font-weight: 600;">OPERATIONAL EVENT LOG</span>
                         <div class="terminal" id="terminalLog">
@@ -545,11 +545,10 @@
                 </div>
             </div>
 
-            <!-- Incident Log Table -->
             <div class="table-wrapper">
-                <div class="panel-header" style="margin-bottom: 1rem;">
+                <div class="panel-header" style="margin-bottom: 0.5rem;">
                     <h3>Real-Time Dispatch & Incident Log</h3>
-                    <span style="font-size: 0.75rem; color: var(--text-sub);">Auto-Prioritized by AI Matrix</span>
+                    <span style="font-size: 0.75rem; color: var(--text-sub);">Click Row to Inspect Details</span>
                 </div>
                 <table>
                     <thead>
@@ -563,35 +562,84 @@
                         </tr>
                     </thead>
                     <tbody id="incidentTableBody">
-                        <tr>
+                        <tr onclick="viewDetails('#INC-8092', 'Pothole Hazard', '28.6139° N, 77.2090° E', 'Depth: 7.2 cm')">
                             <td>#INC-8092</td>
                             <td><span class="badge pothole">Road Care</span></td>
                             <td>28.6139° N, 77.2090° E</td>
                             <td>Depth: 7.2 cm | Severity High</td>
                             <td><span style="color: var(--warning);">Crew Dispatched</span></td>
-                            <td><button style="background:transparent; border:1px solid var(--border-color); color:var(--text-sub); padding:2px 8px; border-radius:4px; cursor:pointer;" onclick="viewDetails('#INC-8092')">Details</button></td>
+                            <td><button style="background:transparent; border:1px solid var(--border-color); color:var(--text-sub); padding:2px 8px; border-radius:4px; cursor:pointer;">Details</button></td>
                         </tr>
-                        <tr>
+                        <tr onclick="viewDetails('#INC-8091', 'Waste Overflow', 'Sector 4 - Bin #12', 'Fill Level: 96%')">
                             <td>#INC-8091</td>
                             <td><span class="badge waste">Smart Waste</span></td>
                             <td>Sector 4 - Commercial Receptacle #12</td>
                             <td>Fill Level: 96% | Overflow in 18 min</td>
                             <td><span style="color: var(--primary);">Route Rerouted</span></td>
-                            <td><button style="background:transparent; border:1px solid var(--border-color); color:var(--text-sub); padding:2px 8px; border-radius:4px; cursor:pointer;" onclick="viewDetails('#INC-8091')">Details</button></td>
+                            <td><button style="background:transparent; border:1px solid var(--border-color); color:var(--text-sub); padding:2px 8px; border-radius:4px; cursor:pointer;">Details</button></td>
                         </tr>
-                        <tr>
+                        <tr onclick="viewDetails('#INC-8090', 'Ambulance Priority', 'Main Arterial Ave', '4 Traffic Signals Override')">
                             <td>#INC-8090</td>
                             <td><span class="badge emergency">Emergency</span></td>
                             <td>Main Arterial Ave → Central Hospital</td>
                             <td>Signal override: 4 Green Lights</td>
                             <td><span style="color: var(--success);">Corridor Active</span></td>
-                            <td><button style="background:transparent; border:1px solid var(--border-color); color:var(--text-sub); padding:2px 8px; border-radius:4px; cursor:pointer;" onclick="viewDetails('#INC-8090')">Details</button></td>
+                            <td><button style="background:transparent; border:1px solid var(--border-color); color:var(--text-sub); padding:2px 8px; border-radius:4px; cursor:pointer;">Details</button></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
         </div>
+
+        <!-- VIEW 2: ROAD VISION TELEMETRY -->
+        <div class="tab-view" id="view-road">
+            <div class="panel-card">
+                <h3>🛣️ Road Vision Computer Vision Feed</h3>
+                <p style="color: var(--text-sub); font-size: 0.9rem;">Automated vehicle camera processing & pothole depth measurement.</p>
+                <div style="background: #000; height: 260px; border-radius: 8px; display:flex; align-items:center; justify-center; color: var(--primary); font-family: monospace; border: 1px solid var(--border-color); justify-content: center;">
+                    [ LIVE CV FEED CAMERA #402 — OBJECT RECOGNITION ACTIVE ]
+                </div>
+                <button class="btn-action" onclick="triggerPotholeEvent(); switchTab('ops');" style="width: auto;">Trigger Visual Road Inspection</button>
+            </div>
+        </div>
+
+        <!-- VIEW 3: IOT WASTE NETWORK -->
+        <div class="tab-view" id="view-waste">
+            <div class="panel-card">
+                <h3>🗑️ Smart Ultrasonic Waste Network</h3>
+                <p style="color: var(--text-sub); font-size: 0.9rem;">Live bin telemetry, fill level prediction, and dynamic garbage truck route calculation.</p>
+                <button class="btn-action" onclick="triggerWasteEvent(); switchTab('ops');" style="width: auto;">Force Sensor Poll Across 128 Receptacles</button>
+            </div>
+        </div>
+
+        <!-- VIEW 4: GREEN CORRIDOR GIS -->
+        <div class="tab-view" id="view-emergency">
+            <div class="panel-card">
+                <h3>🚑 Emergency GIS & Traffic Signal Override</h3>
+                <p style="color: var(--text-sub); font-size: 0.9rem;">Clears green corridors for ambulances while syncing live open bed counts with local hospitals.</p>
+                <button class="btn-action danger" onclick="triggerEmergencyEvent(); switchTab('ops');" style="width: auto;">Dispatch SOS Ambulance Corridor</button>
+            </div>
+        </div>
+
+        <!-- VIEW 5: CITIZEN NLP TICKETS -->
+        <div class="tab-view" id="view-nlp">
+            <div class="panel-card">
+                <h3>📢 Natural Language Processing Ticket Deduplication</h3>
+                <p style="color: var(--text-sub); font-size: 0.9rem;">Parse, categorize, and merge citizen complaints into actionable municipal work orders.</p>
+                <button class="btn-action" onclick="openCivicModal();" style="width: auto;">+ File New NLP Citizen Ticket</button>
+            </div>
+        </div>
+
+        <!-- VIEW 6: SYSTEM GOVERNANCE -->
+        <div class="tab-view" id="view-gov">
+            <div class="panel-card">
+                <h3>⚙️ Platform System Governance & API Security</h3>
+                <p style="color: var(--text-sub); font-size: 0.9rem;">Node permissions, IoT gateway tokens, and AI model weight versioning.</p>
+                <button class="btn-action" onclick="openModal('System Diagnostics:\nCPU Usage: 12%\nMemory: 4.2 GB / 16 GB\nAPI Latency: 14ms')" style="width: auto;">Run Full System Diagnostics</button>
+            </div>
+        </div>
+
     </main>
 
     <!-- Modal Form for Citizen Issue Submission -->
@@ -602,11 +650,20 @@
                 <span class="modal-close" onclick="closeCivicModal()">&times;</span>
             </div>
             <div class="form-group">
-                <label>Issue Description (Natural Language)</label>
-                <textarea id="issueText" rows="3" placeholder="e.g. Water leak near the main park and streetlight broken..."></textarea>
+                <label>Issue Category</label>
+                <select id="issueCat">
+                    <option value="Road Care">Road & Potholes</option>
+                    <option value="Smart Waste">Waste Overflow</option>
+                    <option value="Water Leak">Water & Plumbing</option>
+                    <option value="Lighting">Streetlights</option>
+                </select>
             </div>
             <div class="form-group">
-                <label>Citizen Contact / Email</label>
+                <label>Issue Description (Natural Language)</label>
+                <textarea id="issueText" rows="3" placeholder="e.g. Broken streetlight near park entrance causing low visibility..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>Citizen Contact Email</label>
                 <input type="text" id="citizenContact" placeholder="citizen@city.gov">
             </div>
             <button class="btn-action" style="background: var(--primary); color: #000; justify-content: center; margin-top: 0.5rem;" onclick="processNLPReport()">
@@ -615,8 +672,46 @@
         </div>
     </div>
 
+    <!-- Generic Dynamic Details Modal -->
+    <div class="modal-overlay" id="infoModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 id="modalInfoTitle">System Notification</h3>
+                <span class="modal-close" onclick="closeInfoModal()">&times;</span>
+            </div>
+            <p id="modalInfoBody" style="font-family: monospace; white-space: pre-wrap; color: var(--primary); background: var(--bg-dark); padding: 1rem; border-radius: 6px; border: 1px solid var(--border-color);"></p>
+            <button class="btn-action" style="justify-content: center; background: var(--bg-card);" onclick="closeInfoModal()">Close</button>
+        </div>
+    </div>
+
     <script>
-        // Interactive Canvas Map System
+        // Navigation Switcher
+        function switchTab(tabKey) {
+            const tabs = ['ops', 'road', 'waste', 'emergency', 'nlp', 'gov'];
+            const titles = {
+                'ops': ['Integrated Urban Governance Command', 'Real-Time AI Processing & Sensor Data Fusion Panel'],
+                'road': ['Road Vision Telemetry', 'Computer Vision Pothole Detection & Work Order Dispatch'],
+                'waste': ['Smart Ultrasonic Waste Network', 'Predictive Route Planning & Receptacle Capacity Tracking'],
+                'emergency': ['Green Corridor GIS & Hospital Sync', 'Traffic Signal Override & Emergency Dispatch'],
+                'nlp': ['Citizen NLP Ticket Deduplication', 'Natural Language Category Parsing & Issue Consolidation'],
+                'gov': ['System Governance & Edge Node Control', 'API Keys, Telemetry Gateway & Platform Health']
+            };
+
+            tabs.forEach(t => {
+                document.getElementById(`view-${t}`).classList.remove('active');
+                document.getElementById(`nav-${t}`).classList.remove('active');
+            });
+
+            document.getElementById(`view-${tabKey}`).classList.add('active');
+            document.getElementById(`nav-${tabKey}`).classList.add('active');
+            
+            document.getElementById('headerTitle').innerText = titles[tabKey][0];
+            document.getElementById('headerSub').innerText = titles[tabKey][1];
+
+            if(tabKey === 'ops') setTimeout(resizeCanvas, 50);
+        }
+
+        // Canvas Map System
         const canvas = document.getElementById('cityMap');
         const ctx = canvas.getContext('2d');
 
@@ -635,7 +730,6 @@
         function drawMap() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Draw City Grid Roads
             ctx.strokeStyle = '#1e2d4a';
             ctx.lineWidth = 2;
             for(let i = 0; i < canvas.width; i += 40) {
@@ -651,7 +745,6 @@
                 ctx.stroke();
             }
 
-            // Draw Dynamic Telemetry Markers
             mapPoints.forEach(pt => {
                 ctx.beginPath();
                 ctx.arc(pt.x, pt.y, 8, 0, Math.PI * 2);
@@ -661,24 +754,31 @@
                 else ctx.fillStyle = '#8b5cf6';
                 ctx.fill();
 
-                // Pulse Glow
                 ctx.beginPath();
                 ctx.arc(pt.x, pt.y, 14, 0, Math.PI * 2);
                 ctx.strokeStyle = ctx.fillStyle;
                 ctx.lineWidth = 1;
                 ctx.stroke();
 
-                // Label
                 ctx.fillStyle = '#94a3b8';
                 ctx.font = '10px sans-serif';
                 ctx.fillText(pt.label, pt.x + 12, pt.y + 4);
             });
         }
 
+        canvas.addEventListener('click', function(e) {
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const id = Math.floor(Math.random() * 900) + 100;
+            mapPoints.push({ x: x, y: y, type: 'pothole', label: `Manual Node #${id}` });
+            drawMap();
+            logTerminal(`📍 Manual Telemetry Node #${id} tagged at canvas (${Math.round(x)}, ${Math.round(y)}).`);
+        });
+
         window.addEventListener('resize', resizeCanvas);
         setTimeout(resizeCanvas, 100);
 
-        // Terminal Output Helper
         function logTerminal(msg) {
             const term = document.getElementById('terminalLog');
             const time = new Date().toLocaleTimeString();
@@ -686,7 +786,6 @@
             term.scrollTop = term.scrollHeight;
         }
 
-        // Interactive Button Actions
         function triggerPotholeEvent() {
             const countEl = document.getElementById('val-potholes');
             countEl.innerText = parseInt(countEl.innerText) + 1;
@@ -698,24 +797,24 @@
             mapPoints.push({ x: randomX, y: randomY, type: 'pothole', label: `Pothole #${newId}` });
             drawMap();
 
-            logTerminal(`⚠️ Computer Vision: Pothole detected (Depth: 6.8cm). Auto-generating WO-#${newId}`);
+            logTerminal(`⚠️ CV Detection: Pothole (Depth 6.8cm). Auto Work Order WO-#${newId}`);
 
-            // Insert into Incident Table
             const table = document.getElementById('incidentTableBody');
             const row = table.insertRow(0);
+            row.setAttribute('onclick', `viewDetails('#INC-${newId}', 'Road Care', '28.614° N, 77.208° E', 'Auto-Detected Pothole')`);
             row.innerHTML = `
                 <td>#INC-${newId}</td>
                 <td><span class="badge pothole">Road Care</span></td>
                 <td>28.614${newId/1000}° N, 77.208${newId/1000}° E</td>
                 <td>Depth: 6.8 cm | Auto-Detected</td>
                 <td><span style="color: var(--danger);">Pending Dispatch</span></td>
-                <td><button style="background:transparent; border:1px solid var(--border-color); color:var(--text-sub); padding:2px 8px; border-radius:4px; cursor:pointer;" onclick="viewDetails('#INC-${newId}')">Details</button></td>
+                <td><button style="background:transparent; border:1px solid var(--border-color); color:var(--text-sub); padding:2px 8px; border-radius:4px; cursor:pointer;">Details</button></td>
             `;
         }
 
         function triggerWasteEvent() {
-            logTerminal(`🗑️ IoT Ultrasonic Array: Receptacle #104 filled past 90% threshold.`);
-            logTerminal(`🚚 Recalculating route for Waste Truck #12 via Dynamic Dijkstra AI.`);
+            logTerminal(`🗑️ Ultrasonic IoT Alert: Bin #104 exceeded 90% fill threshold.`);
+            logTerminal(`🚚 Collection Route calculated for Truck #12.`);
             
             const randomX = Math.floor(Math.random() * (canvas.width - 60)) + 30;
             const randomY = Math.floor(Math.random() * (canvas.height - 60)) + 30;
@@ -728,17 +827,17 @@
             const countEl = document.getElementById('val-corridors');
             countEl.innerText = parseInt(countEl.innerText) + 1;
 
-            logTerminal(`🚨 PRIORITY 1: Emergency SOS Received.`);
-            logTerminal(`🚦 GIS Traffic Override: Clearing 5 sequential signals along Main St.`);
+            logTerminal(`🚨 Priority 1 SOS: Ambulance Corridor Activated.`);
+            logTerminal(`🚦 Green Corridor Sync: 5 Traffic Signals Overridden.`);
 
             const randomX = Math.floor(Math.random() * (canvas.width - 60)) + 30;
             const randomY = Math.floor(Math.random() * (canvas.height - 60)) + 30;
 
-            mapPoints.push({ x: randomX, y: randomY, type: 'emergency', label: `Ambulance Priority` });
+            mapPoints.push({ x: randomX, y: randomY, type: 'emergency', label: `Ambulance SOS` });
             drawMap();
         }
 
-        // Modal Handlers
+        // Modals
         function openCivicModal() {
             document.getElementById('civicModal').style.display = 'flex';
         }
@@ -747,31 +846,42 @@
             document.getElementById('civicModal').style.display = 'none';
         }
 
+        function openModal(text) {
+            document.getElementById('modalInfoBody').innerText = text;
+            document.getElementById('infoModal').style.display = 'flex';
+        }
+
+        function closeInfoModal() {
+            document.getElementById('infoModal').style.display = 'none';
+        }
+
+        function viewDetails(id, type, loc, metric) {
+            openModal(`INCIDENT DIAGNOSTIC REPORT\n---------------------------\nID: ${id}\nCategory: ${type}\nLocation: ${loc}\nTelemetry Metric: ${metric}\nAI Processing: Verified by Neural Network\nRecommended Action: Municipal Crew Auto-Routed`);
+        }
+
         function processNLPReport() {
             const text = document.getElementById('issueText').value;
-            if(!text) return alert('Please enter issue description.');
+            const cat = document.getElementById('issueCat').value;
+            if(!text) return alert('Please enter an issue description.');
 
             closeCivicModal();
             logTerminal(`📢 NLP Processing: "${text.substring(0, 30)}..."`);
-            logTerminal(`⚡ Issue categorized, deduplicated (Similarity score: 0.92), and logged.`);
+            logTerminal(`⚡ Category: ${cat} | Deduplicated & Ticket Generated.`);
 
             const newId = Math.floor(Math.random() * 800) + 100;
             const table = document.getElementById('incidentTableBody');
             const row = table.insertRow(0);
+            row.setAttribute('onclick', `viewDetails('#INC-${newId}', '${cat}', 'Citizen GPS Mobile Tag', '${text}')`);
             row.innerHTML = `
                 <td>#INC-${newId}</td>
-                <td><span class="badge nlp">Civic NLP</span></td>
-                <td>Citizen Mobile Tag</td>
-                <td>NLP Categorized: Infrastructure</td>
+                <td><span class="badge nlp">${cat}</span></td>
+                <td>Citizen GPS Tag</td>
+                <td>NLP Parsed Issue</td>
                 <td><span style="color: var(--accent);">Deduplicated</span></td>
-                <td><button style="background:transparent; border:1px solid var(--border-color); color:var(--text-sub); padding:2px 8px; border-radius:4px; cursor:pointer;" onclick="viewDetails('#INC-${newId}')">Details</button></td>
+                <td><button style="background:transparent; border:1px solid var(--border-color); color:var(--text-sub); padding:2px 8px; border-radius:4px; cursor:pointer;">Details</button></td>
             `;
 
             document.getElementById('issueText').value = '';
-        }
-
-        function viewDetails(id) {
-            alert(`Opening full telemetry diagnosis modal for ${id}.\nStatus: Verified by AI Engine.`);
         }
     </script>
 </body>
