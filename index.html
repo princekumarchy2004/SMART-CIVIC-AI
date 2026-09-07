@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMART CIVI AI | Integrated Urban Governance Platform</title>
+    <style>
+        :root {
+            --primary: #0284c7;
+            --primary-dark: #0369a1;
+            --secondary: #10b981;
+            --danger: #ef4444;
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #334155;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        header {
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-left: 1.5rem;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--primary);
+        }
+
+        .hero {
+            padding: 8rem 2rem 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, #38bdf8, #34d399);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+
+        .modules-grid {
+            max-width: 1200px;
+            margin: 2rem auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            padding: 0 2rem;
+        }
+
+        .card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .card h3 {
+            margin-bottom: 0.5rem;
+            color: var(--text-main);
+        }
+
+        .card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .demo-section {
+            max-width: 1200px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+        }
+
+        .demo-container {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+        }
+
+        .demo-controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .console-output {
+            background-color: #090d16;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1rem;
+            font-family: monospace;
+            color: #38bdf8;
+            min-height: 120px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        footer {
+            border-top: 1px solid var(--border);
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            margin-top: 4rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <div class="logo">⚡ SMART CIVI <span>AI</span></div>
+            <nav>
+                <a href="#modules">Modules</a>
+                <a href="#simulation">Live Simulation</a>
+                <a href="#about">About</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <h1>Integrated Urban Governance Ecosystem</h1>
+        <p>Leveraging AI, IoT telemetry, and real-time data analytics to transform municipal management, emergency dispatch, and public sanitation.</p>
+    </section>
+
+    <section class="modules-grid" id="modules">
+        <div class="card">
+            <div class="card-icon">🛣️</div>
+            <h3>Infrastructure & Road Care</h3>
+            <p>Computer vision processes vehicular video feeds and citizen uploads to detect potholes, measure severity, and auto-dispatch work orders.</p>
+        </div>
+        <div class="card">
+            <div class="card-icon">🗑️</div>
+            <h3>Smart Waste Operations</h3>
+            <p>Ultrasonic IoT sensors monitor bin levels, predict overflows, and recalculate garbage truck collection routes dynamically.</p>
+        </div>
+        <div class="card">
+            <div class="card-icon">🚑</div>
+            <h3>Healthcare & Emergency Dispatch</h3>
+            <p>GIS integration clears green corridors via smart traffic signal manipulation and syncs real-time hospital bed availability.</p>
+        </div>
+        <div class="card">
+            <div class="card-icon">📢</div>
+            <h3>Unified Civic Reporting</h3>
+            <p>NLP algorithms automatically categorize, deduplicate, and route citizen issues to appropriate municipal departments.</p>
+        </div>
+    </section>
+
+    <section class="demo-section" id="simulation">
+        <h2 style="margin-bottom: 1rem;">Telemetry Simulation Console</h2>
+        <div class="demo-container">
+            <div class="demo-controls">
+                <button class="btn" onclick="runPotholeScan()">Scan Road Feed (CV)</button>
+                <button class="btn" onclick="checkWasteSensors()">Check Bin Levels (IoT)</button>
+                <button class="btn" onclick="triggerEmergency()">Dispatch Ambulance (GIS)</button>
+            </div>
+            <div class="console-output" id="console">
+                > System initialized. Awaiting municipal telemetry input...
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 SMART CIVI AI Platform. Designed for Next-Gen Urban Management.</p>
+    </footer>
+
+    <script>
+        function log(message) {
+            const consoleEl = document.getElementById('console');
+            const timestamp = new Date().toLocaleTimeString();
+            consoleEl.innerHTML += `<br>[${timestamp}] ${message}`;
+            consoleEl.scrollTop = consoleEl.scrollHeight;
+        }
+
+        function runPotholeScan() {
+            log("⚡ Running Computer Vision scan on Fleet-Cam #402...");
+            setTimeout(() => {
+                log("⚠️ Hazard Detected: Pothole (Severity: High, Depth: 8.5cm).");
+                log("📍 GPS Coordinates: 28.6139° N, 77.2090° E. Work order #WO-9021 generated & routed.");
+            }, 800);
+        }
+
+        function checkWasteSensors() {
+            log("⚡ Polling 128 Ultrasonic IoT Waste Sensors across Sector 4...");
+            setTimeout(() => {
+                log("📊 Receptacle #88 capacity reached 92%. Overflow predicted in 35 mins.");
+                log("🚚 Dynamic route recalculation sent to Collection Unit #12.");
+            }, 800);
+        }
+
+        function triggerEmergency() {
+            log("⚡ Emergency SOS Received: Priority 1 Patient Transport.");
+            setTimeout(() => {
+                log("🚦 Green Corridor activated: 5 sequential traffic lights synced.");
+                log("🏥 Hospital Sync: City Central Hospital (Bed #B-104 reserved).");
+            }, 800);
+        }
+    </script>
+</body>
+</html>
