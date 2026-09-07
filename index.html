@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SMART CIVI AI — Fully Interactive Urban Command Platform</title>
+    <title>SMART CIVI AI — Integrated Urban Command Platform</title>
     <style>
         :root {
-            --bg-dark: #0a0e17;
-            --bg-panel: #131b2e;
-            --bg-card: #1c273e;
-            --border-color: #2a3b5c;
+            --bg-dark: #070a10;
+            --bg-panel: #0f172a;
+            --bg-card: #1e293b;
+            --border-color: #334155;
             --primary: #38bdf8;
             --primary-glow: rgba(56, 189, 248, 0.25);
             --success: #10b981;
             --warning: #f59e0b;
             --danger: #ef4444;
-            --text-main: #f1f5f9;
+            --text-main: #f8fafc;
             --text-sub: #94a3b8;
             --accent: #8b5cf6;
         }
@@ -38,7 +38,7 @@
 
         /* Sidebar Navigation */
         aside {
-            width: 260px;
+            width: 270px;
             background: var(--bg-panel);
             border-right: 1px solid var(--border-color);
             display: flex;
@@ -51,8 +51,8 @@
         .brand {
             display: flex;
             align-items: center;
-            gap: 12px;
-            font-size: 1.25rem;
+            gap: 10px;
+            font-size: 1.2rem;
             font-weight: 800;
             color: var(--primary);
             cursor: pointer;
@@ -76,7 +76,7 @@
         }
 
         .nav-item {
-            padding: 0.8rem 1rem;
+            padding: 0.85rem 1rem;
             border-radius: 8px;
             color: var(--text-sub);
             cursor: pointer;
@@ -96,7 +96,7 @@
         .nav-item.active {
             background: var(--bg-card);
             color: var(--primary);
-            border-left: 3px solid var(--primary);
+            border-left: 4px solid var(--primary);
         }
 
         .system-status {
@@ -127,7 +127,7 @@
             100% { opacity: 1; transform: scale(1); }
         }
 
-        /* Main Workspace */
+        /* Workspace Header */
         main {
             flex: 1;
             display: flex;
@@ -145,7 +145,7 @@
         }
 
         .header-title h1 {
-            font-size: 1.4rem;
+            font-size: 1.35rem;
             font-weight: 700;
         }
 
@@ -163,11 +163,6 @@
             border-radius: 30px;
             border: 1px solid var(--border-color);
             cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .user-profile:hover {
-            border-color: var(--primary);
         }
 
         .avatar {
@@ -182,7 +177,7 @@
             font-size: 0.85rem;
         }
 
-        /* Dashboard Views */
+        /* View Containers */
         .tab-view {
             display: none;
             padding: 1.5rem 2rem;
@@ -215,7 +210,7 @@
         }
 
         .metric-card:hover {
-            transform: translateY(-3px);
+            transform: translateY(-2px);
             border-color: var(--primary);
         }
 
@@ -234,37 +229,40 @@
         .metric-card.purple::before { background: var(--accent); }
 
         .metric-label {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: var(--text-sub);
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
         .metric-value {
-            font-size: 1.8rem;
+            font-size: 1.75rem;
             font-weight: 700;
         }
 
         .metric-sub {
             font-size: 0.75rem;
             color: var(--success);
-            display: flex;
-            align-items: center;
-            gap: 4px;
         }
 
-        /* Main Split Grid */
+        /* Grid layouts */
         .main-grid {
             display: grid;
             grid-template-columns: 2fr 1fr;
             gap: 1.5rem;
         }
 
-        @media (max-width: 1200px) {
-            .main-grid { grid-template-columns: 1fr; }
+        .grid-2col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
         }
 
-        .map-wrapper, .actions-wrapper, .table-wrapper, .panel-card {
+        @media (max-width: 1100px) {
+            .main-grid, .grid-2col { grid-template-columns: 1fr; }
+        }
+
+        .panel-card {
             background: var(--bg-panel);
             border: 1px solid var(--border-color);
             border-radius: 12px;
@@ -285,20 +283,29 @@
             font-weight: 600;
         }
 
-        /* Canvas Map */
+        /* Map Canvas */
         #cityMap {
             width: 100%;
             height: 360px;
-            background: #0d131f;
+            background: #090e17;
             border-radius: 8px;
             border: 1px solid var(--border-color);
             cursor: crosshair;
         }
 
+        /* Road CV Simulation Canvas */
+        #roadCvCanvas {
+            width: 100%;
+            height: 280px;
+            background: #000;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
         /* Action Buttons */
         .btn-action {
             width: 100%;
-            padding: 0.85rem 1rem;
+            padding: 0.8rem 1rem;
             border-radius: 8px;
             border: 1px solid var(--border-color);
             background: var(--bg-card);
@@ -314,15 +321,14 @@
 
         .btn-action:hover {
             border-color: var(--primary);
-            background: #23314e;
-            transform: translateY(-2px);
+            background: #273549;
         }
 
-        .btn-action.danger:hover {
-            border-color: var(--danger);
-        }
+        .btn-action.danger:hover { border-color: var(--danger); }
+        .btn-action.success { background: var(--success); color: #000; border: none; }
+        .btn-action.primary { background: var(--primary); color: #000; border: none; }
 
-        /* Live Table */
+        /* Tables */
         table {
             width: 100%;
             border-collapse: collapse;
@@ -361,56 +367,106 @@
         .badge.nlp { background: rgba(139, 92, 246, 0.2); color: var(--accent); }
 
         .terminal {
-            background: #05080e;
+            background: #030712;
             border: 1px solid var(--border-color);
             border-radius: 8px;
-            padding: 1rem;
+            padding: 0.85rem;
             font-family: "Courier New", Courier, monospace;
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             color: #38bdf8;
             height: 140px;
             overflow-y: auto;
         }
 
-        /* Modal Overlay */
-        .modal-overlay {
+        /* Bin Progress Bar */
+        .bin-item {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            background: var(--bg-card);
+            padding: 0.85rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: #090e17;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.4s ease;
+        }
+
+        /* Signal Toggle Control */
+        .signal-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-card);
+            padding: 0.85rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .switch-btn {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+        }
+
+        .switch-btn.override { background: var(--success); color: #000; }
+        .switch-btn.auto { background: var(--border-color); color: var(--text-main); }
+
+        /* Slide-over Diagnostic Drawer */
+        .drawer-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(0, 0, 0, 0.75);
+            background: rgba(0, 0, 0, 0.7);
             display: none;
-            justify-content: center;
-            align-items: center;
+            justify-content: flex-end;
             z-index: 1000;
         }
 
-        .modal-card {
-            background: var(--bg-panel);
-            border: 1px solid var(--primary);
-            box-shadow: 0 0 20px var(--primary-glow);
-            border-radius: 12px;
-            padding: 2rem;
+        .drawer {
             width: 480px;
-            max-width: 90%;
+            max-width: 90vw;
+            height: 100%;
+            background: var(--bg-panel);
+            border-left: 1px solid var(--border-color);
+            padding: 2rem;
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            gap: 1.25rem;
+            overflow-y: auto;
+            box-shadow: -10px 0 30px rgba(0,0,0,0.5);
         }
 
-        .modal-header {
+        .drawer-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
         }
 
-        .modal-close {
+        .drawer-close {
             cursor: pointer;
+            font-size: 1.5rem;
             color: var(--text-sub);
-            font-size: 1.4rem;
         }
 
+        /* Input Controls */
         .form-group {
             display: flex;
             flex-direction: column;
@@ -426,7 +482,7 @@
             background: var(--bg-dark);
             border: 1px solid var(--border-color);
             border-radius: 6px;
-            padding: 0.6rem;
+            padding: 0.7rem;
             color: var(--text-main);
             outline: none;
         }
@@ -453,7 +509,7 @@
                 <li class="nav-item" id="nav-gov" onclick="switchTab('gov')">⚙️ System Governance</li>
             </ul>
         </div>
-        <div class="system-status" onclick="openModal('System Telemetry Health: 100% Operational\nAll 420 Node Sensors Online')">
+        <div class="system-status" onclick="openDrawer('SYS-HEALTH', 'Platform Health Diagnostics', 'System Cluster: Active\nIoT Gateway Latency: 12ms\nActive Sensors: 420/420\nUptime: 99.98%')">
             <div class="pulse-dot"></div>
             <span>Telemetry Grid: Active</span>
         </div>
@@ -466,7 +522,7 @@
                 <h1 id="headerTitle">Integrated Urban Governance Command</h1>
                 <p id="headerSub">Real-Time AI Processing & Sensor Data Fusion Panel</p>
             </div>
-            <div class="user-profile" onclick="openModal('Admin Profile: Keshav (Sector 4 Operations Lead)\nSession Auth: Active token #AUTH-9921')">
+            <div class="user-profile" onclick="openDrawer('USER-ADMIN', 'Municipal Commander Profile', 'User ID: Keshav\nRole: Lead Operations Director\nSector: Sector 4 Urban Core\nClearance: Level 5 Admin')">
                 <div class="avatar">HQ</div>
                 <div style="font-size: 0.85rem;">
                     <div style="font-weight: 600;">Municipal Admin</div>
@@ -475,7 +531,7 @@
             </div>
         </header>
 
-        <!-- VIEW 1: OPERATIONS CENTER (MAIN DASHBOARD) -->
+        <!-- VIEW 1: OPERATIONS CENTER -->
         <div class="tab-view active" id="view-ops">
 
             <div class="metrics-grid">
@@ -487,7 +543,7 @@
                 <div class="metric-card green" onclick="switchTab('waste')">
                     <span class="metric-label">IoT Waste Bin Status</span>
                     <span class="metric-value" id="val-bins">94.2%</span>
-                    <span class="metric-sub">✓ Routes Optimized</span>
+                    <span class="metric-sub">✓ Dynamic Routes Active</span>
                 </div>
                 <div class="metric-card yellow" onclick="switchTab('emergency')">
                     <span class="metric-label">Green Corridors Active</span>
@@ -497,26 +553,26 @@
                 <div class="metric-card purple" onclick="switchTab('nlp')">
                     <span class="metric-label">NLP Ticket Deduplication</span>
                     <span class="metric-value" id="val-tickets">89%</span>
-                    <span class="metric-sub">⚡ 1,240 Issues Consolidated</span>
+                    <span class="metric-sub">⚡ 1,240 Issues Merged</span>
                 </div>
             </div>
 
             <div class="main-grid">
-                <div class="map-wrapper">
+                <div class="panel-card">
                     <div class="panel-header">
                         <h3>Geospatial Telemetry Layer</h3>
-                        <span style="font-size: 0.75rem; color: var(--text-sub);">Click Map to Add Live Node</span>
+                        <span style="font-size: 0.75rem; color: var(--text-sub);">Click Grid to Tag Sensor Coordinate</span>
                     </div>
                     <canvas id="cityMap"></canvas>
                 </div>
 
-                <div class="actions-wrapper">
+                <div class="panel-card">
                     <div class="panel-header">
                         <h3>Interactive AI Triggers</h3>
                     </div>
 
                     <button class="btn-action" onclick="triggerPotholeEvent()">
-                        <span>🛣️ Scan Visual Feed (Pothole)</span>
+                        <span>🛣️ Scan CCTV Feed (Pothole)</span>
                         <span>→</span>
                     </button>
 
@@ -530,61 +586,61 @@
                         <span>→</span>
                     </button>
 
-                    <button class="btn-action" onclick="openCivicModal()">
+                    <button class="btn-action" onclick="switchTab('nlp')">
                         <span>📢 Submit NLP Citizen Report</span>
                         <span>+</span>
                     </button>
 
-                    <div style="margin-top: 0.5rem;">
-                        <span style="font-size: 0.75rem; color: var(--text-sub); font-weight: 600;">OPERATIONAL EVENT LOG</span>
+                    <div>
+                        <span style="font-size: 0.75rem; color: var(--text-sub); font-weight: 600;">LIVE TELEMETRY STREAM</span>
                         <div class="terminal" id="terminalLog">
-                            [00:00:01] CIVI AI Telemetry Hub initialized.<br>
-                            [00:00:02] Connected to 420 IoT nodes & CCTV feeds.
+                            [00:00:01] CIVI AI Telemetry Core initialized.<br>
+                            [00:00:02] Connected to 420 IoT nodes & CCTV streams.
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="table-wrapper">
-                <div class="panel-header" style="margin-bottom: 0.5rem;">
+            <div class="panel-card">
+                <div class="panel-header">
                     <h3>Real-Time Dispatch & Incident Log</h3>
-                    <span style="font-size: 0.75rem; color: var(--text-sub);">Click Row to Inspect Details</span>
+                    <span style="font-size: 0.75rem; color: var(--text-sub);">Click Row to Launch Full Diagnostics Drawer</span>
                 </div>
                 <table>
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <th>Incident ID</th>
                             <th>Category</th>
-                            <th>Location / Coordinates</th>
+                            <th>Coordinates / Location</th>
                             <th>AI Detection Metric</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody id="incidentTableBody">
-                        <tr onclick="viewDetails('#INC-8092', 'Pothole Hazard', '28.6139° N, 77.2090° E', 'Depth: 7.2 cm')">
+                        <tr onclick="openDrawer('#INC-8092', 'Pothole Road Defect Diagnostic', 'Location: 28.6139° N, 77.2090° E\nDepth: 7.2 cm\nSeverity: High\nAI Model Confidence: 98.4%\nAutomated Dispatch Unit: Crew #4 (En Route)')">
                             <td>#INC-8092</td>
                             <td><span class="badge pothole">Road Care</span></td>
                             <td>28.6139° N, 77.2090° E</td>
                             <td>Depth: 7.2 cm | Severity High</td>
                             <td><span style="color: var(--warning);">Crew Dispatched</span></td>
-                            <td><button style="background:transparent; border:1px solid var(--border-color); color:var(--text-sub); padding:2px 8px; border-radius:4px; cursor:pointer;">Details</button></td>
+                            <td><button class="btn-action" style="padding: 2px 8px; font-size:0.75rem; width:auto;">Inspect</button></td>
                         </tr>
-                        <tr onclick="viewDetails('#INC-8091', 'Waste Overflow', 'Sector 4 - Bin #12', 'Fill Level: 96%')">
+                        <tr onclick="openDrawer('#INC-8091', 'IoT Receptacle Overflow Risk', 'Location: Sector 4 Receptacle #12\nFill Level: 96%\nUltrasonic Sensor ID: #US-8821\nEstimated Overflow: 14 mins\nCollection Route: Dijkstra Re-route active')">
                             <td>#INC-8091</td>
                             <td><span class="badge waste">Smart Waste</span></td>
-                            <td>Sector 4 - Commercial Receptacle #12</td>
+                            <td>Sector 4 - Receptacle #12</td>
                             <td>Fill Level: 96% | Overflow in 18 min</td>
                             <td><span style="color: var(--primary);">Route Rerouted</span></td>
-                            <td><button style="background:transparent; border:1px solid var(--border-color); color:var(--text-sub); padding:2px 8px; border-radius:4px; cursor:pointer;">Details</button></td>
+                            <td><button class="btn-action" style="padding: 2px 8px; font-size:0.75rem; width:auto;">Inspect</button></td>
                         </tr>
-                        <tr onclick="viewDetails('#INC-8090', 'Ambulance Priority', 'Main Arterial Ave', '4 Traffic Signals Override')">
+                        <tr onclick="openDrawer('#INC-8090', 'Priority 1 SOS Corridor', 'Location: Main Arterial Ave → Central Hospital\nVehicle: Ambulance #04\nETA Reduction: -4.2 minutes\nSignal Phase: Green Wave Forced')">
                             <td>#INC-8090</td>
                             <td><span class="badge emergency">Emergency</span></td>
-                            <td>Main Arterial Ave → Central Hospital</td>
+                            <td>Main Arterial Ave → Hospital</td>
                             <td>Signal override: 4 Green Lights</td>
                             <td><span style="color: var(--success);">Corridor Active</span></td>
-                            <td><button style="background:transparent; border:1px solid var(--border-color); color:var(--text-sub); padding:2px 8px; border-radius:4px; cursor:pointer;">Details</button></td>
+                            <td><button class="btn-action" style="padding: 2px 8px; font-size:0.75rem; width:auto;">Inspect</button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -594,107 +650,236 @@
 
         <!-- VIEW 2: ROAD VISION TELEMETRY -->
         <div class="tab-view" id="view-road">
-            <div class="panel-card">
-                <h3>🛣️ Road Vision Computer Vision Feed</h3>
-                <p style="color: var(--text-sub); font-size: 0.9rem;">Automated vehicle camera processing & pothole depth measurement.</p>
-                <div style="background: #000; height: 260px; border-radius: 8px; display:flex; align-items:center; justify-center; color: var(--primary); font-family: monospace; border: 1px solid var(--border-color); justify-content: center;">
-                    [ LIVE CV FEED CAMERA #402 — OBJECT RECOGNITION ACTIVE ]
+            <div class="grid-2col">
+                <div class="panel-card">
+                    <div class="panel-header">
+                        <h3>CCTV Visual Computer Vision Feed</h3>
+                        <span style="font-size: 0.75rem; color: var(--success);">🔴 LIVE STREAMING</span>
+                    </div>
+                    <canvas id="roadCvCanvas"></canvas>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="btn-action primary" onclick="triggerPotholeEvent()">Scan & Identify Road Defect</button>
+                        <button class="btn-action" onclick="toggleCvBoundingBox()">Toggle Detection Bounding Box</button>
+                    </div>
                 </div>
-                <button class="btn-action" onclick="triggerPotholeEvent(); switchTab('ops');" style="width: auto;">Trigger Visual Road Inspection</button>
+
+                <div class="panel-card">
+                    <h3>Computer Vision Neural Network Metrics</h3>
+                    <p style="font-size: 0.85rem; color: var(--text-sub);">YOLOv8 Edge model running on local node processing road surface CCTV feeds.</p>
+                    
+                    <div class="form-group">
+                        <label>Active CCTV Feed Node</label>
+                        <select onchange="changeCctvCamera(this.value)">
+                            <option value="CAM-402">CAM-402: Main Sector 4 Intersection</option>
+                            <option value="CAM-403">CAM-403: Central Highway Flyover</option>
+                            <option value="CAM-404">CAM-404: East Commercial Corridor</option>
+                        </select>
+                    </div>
+
+                    <div style="background: var(--bg-card); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color); font-family: monospace; font-size: 0.8rem; display:flex; flex-direction:column; gap:6px;">
+                        <div>Model Weight: ResNet-50 + YOLO v8 Edge</div>
+                        <div>Frame Rate: 60 FPS (Hardware Accelerated)</div>
+                        <div>Anomalies Detected Today: 142</div>
+                        <div>Auto Work Orders Generated: 12</div>
+                    </div>
+                </div>
             </div>
         </div>
 
         <!-- VIEW 3: IOT WASTE NETWORK -->
         <div class="tab-view" id="view-waste">
-            <div class="panel-card">
-                <h3>🗑️ Smart Ultrasonic Waste Network</h3>
-                <p style="color: var(--text-sub); font-size: 0.9rem;">Live bin telemetry, fill level prediction, and dynamic garbage truck route calculation.</p>
-                <button class="btn-action" onclick="triggerWasteEvent(); switchTab('ops');" style="width: auto;">Force Sensor Poll Across 128 Receptacles</button>
+            <div class="grid-2col">
+                <div class="panel-card">
+                    <div class="panel-header">
+                        <h3>Ultrasonic Waste Receptacle Cluster</h3>
+                        <button class="btn-action" style="width: auto; padding: 4px 10px;" onclick="pollWasteSensors()">Poll All Sensors</button>
+                    </div>
+
+                    <div class="bin-item">
+                        <div style="display: flex; justify-content: space-between; font-size: 0.85rem;">
+                            <span>Receptacle #12 (Commercial District)</span>
+                            <span id="bin1-val" style="color: var(--danger); font-weight: bold;">96% FULL</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="bin1-bar" style="width: 96%; background: var(--danger);"></div>
+                        </div>
+                    </div>
+
+                    <div class="bin-item">
+                        <div style="display: flex; justify-content: space-between; font-size: 0.85rem;">
+                            <span>Receptacle #44 (Central Park)</span>
+                            <span id="bin2-val" style="color: var(--warning); font-weight: bold;">78% FULL</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="bin2-bar" style="width: 78%; background: var(--warning);"></div>
+                        </div>
+                    </div>
+
+                    <div class="bin-item">
+                        <div style="display: flex; justify-content: space-between; font-size: 0.85rem;">
+                            <span>Receptacle #88 (Metro Station)</span>
+                            <span id="bin3-val" style="color: var(--success); font-weight: bold;">32% FULL</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="bin3-bar" style="width: 32%; background: var(--success);"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-card">
+                    <h3>Dynamic Truck Optimization (Dijkstra AI)</h3>
+                    <p style="font-size: 0.85rem; color: var(--text-sub);">Routes garbage collection trucks dynamically based on bin capacity real-time readings.</p>
+                    <div id="routeLog" style="background: var(--bg-card); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color); font-family: monospace; font-size: 0.8rem; height: 180px; overflow-y: auto;">
+                        [ROUTE ENGINE ACTIVE]<br>
+                        Current Optimal Path: Depot → Bin #12 → Bin #44 → Recycling Center.<br>
+                        Fuel Saved Today: 18.4%
+                    </div>
+                    <button class="btn-action primary" onclick="optimizeWasteRoute()">Recalculate Dynamic Collection Route</button>
+                </div>
             </div>
         </div>
 
         <!-- VIEW 4: GREEN CORRIDOR GIS -->
         <div class="tab-view" id="view-emergency">
-            <div class="panel-card">
-                <h3>🚑 Emergency GIS & Traffic Signal Override</h3>
-                <p style="color: var(--text-sub); font-size: 0.9rem;">Clears green corridors for ambulances while syncing live open bed counts with local hospitals.</p>
-                <button class="btn-action danger" onclick="triggerEmergencyEvent(); switchTab('ops');" style="width: auto;">Dispatch SOS Ambulance Corridor</button>
+            <div class="grid-2col">
+                <div class="panel-card">
+                    <h3>Green Corridor Traffic Signal Override</h3>
+                    <p style="font-size: 0.85rem; color: var(--text-sub);">Manually or automatically override traffic lights along emergency routes.</p>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <div class="signal-item">
+                            <span>Signal #1: Main Street & 4th Ave</span>
+                            <button class="switch-btn override" id="sig1" onclick="toggleSignal('sig1')">FORCED GREEN</button>
+                        </div>
+                        <div class="signal-item">
+                            <span>Signal #2: Hospital Bypass Junction</span>
+                            <button class="switch-btn override" id="sig2" onclick="toggleSignal('sig2')">FORCED GREEN</button>
+                        </div>
+                        <div class="signal-item">
+                            <span>Signal #3: Outer Ring Road North</span>
+                            <button class="switch-btn auto" id="sig3" onclick="toggleSignal('sig3')">AUTO CYCLING</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-card">
+                    <h3>Hospital Emergency Room Integration</h3>
+                    <p style="font-size: 0.85rem; color: var(--text-sub);">Live bed availability synced with dispatch center.</p>
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <div class="signal-item">
+                            <span>City Central Hospital</span>
+                            <span style="color: var(--success); font-weight: bold;">14 ICU Beds Open</span>
+                        </div>
+                        <div class="signal-item">
+                            <span>Metro Trauma Center</span>
+                            <span style="color: var(--warning); font-weight: bold;">3 ICU Beds Open</span>
+                        </div>
+                    </div>
+                    <button class="btn-action danger" onclick="triggerEmergencyEvent(); switchTab('ops');">Dispatch New Priority Ambulance SOS</button>
+                </div>
             </div>
         </div>
 
         <!-- VIEW 5: CITIZEN NLP TICKETS -->
         <div class="tab-view" id="view-nlp">
-            <div class="panel-card">
-                <h3>📢 Natural Language Processing Ticket Deduplication</h3>
-                <p style="color: var(--text-sub); font-size: 0.9rem;">Parse, categorize, and merge citizen complaints into actionable municipal work orders.</p>
-                <button class="btn-action" onclick="openCivicModal();" style="width: auto;">+ File New NLP Citizen Ticket</button>
+            <div class="grid-2col">
+                <div class="panel-card">
+                    <h3>Natural Language Complaint Processor</h3>
+                    <div class="form-group">
+                        <label>Issue Category</label>
+                        <select id="nlpCat">
+                            <option value="Road Care">Road & Potholes</option>
+                            <option value="Smart Waste">Waste & Sanitation</option>
+                            <option value="Emergency">Public Safety / Hazard</option>
+                            <option value="Infrastructure">Street Lighting & Power</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Citizen Voice/Text Complaint Input</label>
+                        <textarea id="nlpInput" rows="4" placeholder="e.g., Massive water leakage near Sector 4 metro entrance causing traffic delays..."></textarea>
+                    </div>
+                    <button class="btn-action primary" onclick="runNlpEngine()">Run NLP Classification & Deduplication</button>
+                </div>
+
+                <div class="panel-card">
+                    <h3>AI Parsing Output Payload</h3>
+                    <div id="nlpResult" style="background: var(--bg-card); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color); font-family: monospace; font-size: 0.8rem; height: 210px; overflow-y: auto;">
+                        [NLP ENGINE READY]<br>
+                        Enter issue text on the left to run semantic vector similarity, extract key entities, and generate work orders.
+                    </div>
+                </div>
             </div>
         </div>
 
         <!-- VIEW 6: SYSTEM GOVERNANCE -->
         <div class="tab-view" id="view-gov">
-            <div class="panel-card">
-                <h3>⚙️ Platform System Governance & API Security</h3>
-                <p style="color: var(--text-sub); font-size: 0.9rem;">Node permissions, IoT gateway tokens, and AI model weight versioning.</p>
-                <button class="btn-action" onclick="openModal('System Diagnostics:\nCPU Usage: 12%\nMemory: 4.2 GB / 16 GB\nAPI Latency: 14ms')" style="width: auto;">Run Full System Diagnostics</button>
+            <div class="grid-2col">
+                <div class="panel-card">
+                    <h3>System API Keys & Nodes Security</h3>
+                    <p style="font-size: 0.85rem; color: var(--text-sub);">Active edge node communication tokens.</p>
+                    <div class="form-group">
+                        <label>Active API Gateway Token</label>
+                        <input type="text" value="civi_live_sec4_99a82b3c4d5e6f" readonly>
+                    </div>
+                    <button class="btn-action" onclick="generateApiKey()">Rotate API Gateway Token</button>
+                </div>
+
+                <div class="panel-card">
+                    <h3>Cluster Diagnostics & Edge Load</h3>
+                    <div style="display: flex; flex-direction: column; gap: 10px; font-size: 0.85rem;">
+                        <div class="signal-item">
+                            <span>CPU Utilization</span>
+                            <span style="color: var(--primary); font-weight: bold;">14.2%</span>
+                        </div>
+                        <div class="signal-item">
+                            <span>RAM Allocated</span>
+                            <span style="color: var(--success); font-weight: bold;">4.8 GB / 16 GB</span>
+                        </div>
+                        <div class="signal-item">
+                            <span>Active Node WebSockets</span>
+                            <span style="color: var(--success); font-weight: bold;">420 Online</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
     </main>
 
-    <!-- Modal Form for Citizen Issue Submission -->
-    <div class="modal-overlay" id="civicModal">
-        <div class="modal-card">
-            <div class="modal-header">
-                <h3>Submit Citizen Complaint (NLP Engine)</h3>
-                <span class="modal-close" onclick="closeCivicModal()">&times;</span>
+    <!-- Interactive Diagnostic Slide-over Drawer -->
+    <div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer(event)">
+        <div class="drawer" onclick="event.stopPropagation()">
+            <div class="drawer-header">
+                <div>
+                    <h3 id="drawerTitle">Incident Telemetry</h3>
+                    <span id="drawerSub" style="font-size: 0.75rem; color: var(--text-sub);">ID: #INC-0000</span>
+                </div>
+                <span class="drawer-close" onclick="closeDrawerDirect()">&times;</span>
             </div>
-            <div class="form-group">
-                <label>Issue Category</label>
-                <select id="issueCat">
-                    <option value="Road Care">Road & Potholes</option>
-                    <option value="Smart Waste">Waste Overflow</option>
-                    <option value="Water Leak">Water & Plumbing</option>
-                    <option value="Lighting">Streetlights</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Issue Description (Natural Language)</label>
-                <textarea id="issueText" rows="3" placeholder="e.g. Broken streetlight near park entrance causing low visibility..."></textarea>
-            </div>
-            <div class="form-group">
-                <label>Citizen Contact Email</label>
-                <input type="text" id="citizenContact" placeholder="citizen@city.gov">
-            </div>
-            <button class="btn-action" style="background: var(--primary); color: #000; justify-content: center; margin-top: 0.5rem;" onclick="processNLPReport()">
-                Process & Deduplicate Issue
-            </button>
-        </div>
-    </div>
 
-    <!-- Generic Dynamic Details Modal -->
-    <div class="modal-overlay" id="infoModal">
-        <div class="modal-card">
-            <div class="modal-header">
-                <h3 id="modalInfoTitle">System Notification</h3>
-                <span class="modal-close" onclick="closeInfoModal()">&times;</span>
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+                <div style="font-size: 0.8rem; color: var(--text-sub);">DIAGNOSTIC & AUDIT PAYLOAD</div>
+                <pre id="drawerContent" style="background: var(--bg-dark); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color); color: var(--primary); font-family: monospace; font-size: 0.8rem; white-space: pre-wrap;"></pre>
             </div>
-            <p id="modalInfoBody" style="font-family: monospace; white-space: pre-wrap; color: var(--primary); background: var(--bg-dark); padding: 1rem; border-radius: 6px; border: 1px solid var(--border-color);"></p>
-            <button class="btn-action" style="justify-content: center; background: var(--bg-card);" onclick="closeInfoModal()">Close</button>
+
+            <div style="margin-top: auto; display: flex; flex-direction: column; gap: 10px;">
+                <button class="btn-action success" onclick="resolveCurrentIncident()">Mark Incident as Resolved</button>
+                <button class="btn-action" onclick="closeDrawerDirect()">Close Drawer</button>
+            </div>
         </div>
     </div>
 
     <script>
-        // Navigation Switcher
+        // Tab Navigation Module
         function switchTab(tabKey) {
             const tabs = ['ops', 'road', 'waste', 'emergency', 'nlp', 'gov'];
             const titles = {
                 'ops': ['Integrated Urban Governance Command', 'Real-Time AI Processing & Sensor Data Fusion Panel'],
-                'road': ['Road Vision Telemetry', 'Computer Vision Pothole Detection & Work Order Dispatch'],
+                'road': ['Road Vision Telemetry', 'Computer Vision Pothole Detection & CCTV Frame Analysis'],
                 'waste': ['Smart Ultrasonic Waste Network', 'Predictive Route Planning & Receptacle Capacity Tracking'],
-                'emergency': ['Green Corridor GIS & Hospital Sync', 'Traffic Signal Override & Emergency Dispatch'],
-                'nlp': ['Citizen NLP Ticket Deduplication', 'Natural Language Category Parsing & Issue Consolidation'],
-                'gov': ['System Governance & Edge Node Control', 'API Keys, Telemetry Gateway & Platform Health']
+                'emergency': ['Green Corridor GIS & Emergency Sync', 'Traffic Signal Override & Priority Dispatch'],
+                'nlp': ['Citizen NLP Ticket Engine', 'Natural Language Category Parsing & Deduplication Matrix'],
+                'gov': ['System Governance & Edge Node Control', 'API Security Keys, Cluster Load & System Diagnostics']
             };
 
             tabs.forEach(t => {
@@ -709,9 +894,10 @@
             document.getElementById('headerSub').innerText = titles[tabKey][1];
 
             if(tabKey === 'ops') setTimeout(resizeCanvas, 50);
+            if(tabKey === 'road') setTimeout(drawCvCanvas, 50);
         }
 
-        // Canvas Map System
+        // Map Canvas System
         const canvas = document.getElementById('cityMap');
         const ctx = canvas.getContext('2d');
 
@@ -730,32 +916,27 @@
         function drawMap() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+            // Grid Lines
             ctx.strokeStyle = '#1e2d4a';
-            ctx.lineWidth = 2;
+            ctx.lineWidth = 1.5;
             for(let i = 0; i < canvas.width; i += 40) {
-                ctx.beginPath();
-                ctx.moveTo(i, 0);
-                ctx.lineTo(i, canvas.height);
-                ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, canvas.height); ctx.stroke();
             }
             for(let j = 0; j < canvas.height; j += 40) {
-                ctx.beginPath();
-                ctx.moveTo(0, j);
-                ctx.lineTo(canvas.width, j);
-                ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(0, j); ctx.lineTo(canvas.width, j); ctx.stroke();
             }
 
+            // Draw Nodes
             mapPoints.forEach(pt => {
                 ctx.beginPath();
-                ctx.arc(pt.x, pt.y, 8, 0, Math.PI * 2);
+                ctx.arc(pt.x, pt.y, 7, 0, Math.PI * 2);
                 if(pt.type === 'pothole') ctx.fillStyle = '#ef4444';
                 else if(pt.type === 'waste') ctx.fillStyle = '#f59e0b';
-                else if(pt.type === 'emergency') ctx.fillStyle = '#10b981';
-                else ctx.fillStyle = '#8b5cf6';
+                else ctx.fillStyle = '#10b981';
                 ctx.fill();
 
                 ctx.beginPath();
-                ctx.arc(pt.x, pt.y, 14, 0, Math.PI * 2);
+                ctx.arc(pt.x, pt.y, 13, 0, Math.PI * 2);
                 ctx.strokeStyle = ctx.fillStyle;
                 ctx.lineWidth = 1;
                 ctx.stroke();
@@ -771,14 +952,72 @@
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
             const id = Math.floor(Math.random() * 900) + 100;
-            mapPoints.push({ x: x, y: y, type: 'pothole', label: `Manual Node #${id}` });
+            mapPoints.push({ x: x, y: y, type: 'pothole', label: `Node #${id}` });
             drawMap();
-            logTerminal(`📍 Manual Telemetry Node #${id} tagged at canvas (${Math.round(x)}, ${Math.round(y)}).`);
+            logTerminal(`📍 Manual Sensor Node #${id} tagged at canvas coordinates (${Math.round(x)}, ${Math.round(y)}).`);
         });
 
         window.addEventListener('resize', resizeCanvas);
         setTimeout(resizeCanvas, 100);
 
+        // Road CV Canvas Feed Simulation
+        const cvCanvas = document.getElementById('roadCvCanvas');
+        const cvCtx = cvCanvas.getContext('2d');
+        let showCvBoxes = true;
+        let cvCamName = "CAM-402";
+
+        function drawCvCanvas() {
+            cvCanvas.width = cvCanvas.offsetWidth;
+            cvCanvas.height = cvCanvas.offsetHeight;
+            
+            cvCtx.fillStyle = '#0a0f1d';
+            cvCtx.fillRect(0, 0, cvCanvas.width, cvCanvas.height);
+
+            // Draw Road Overlay
+            cvCtx.strokeStyle = '#334155';
+            cvCtx.lineWidth = 3;
+            cvCtx.beginPath(); cvCtx.moveTo(cvCanvas.width*0.2, cvCanvas.height); cvCtx.lineTo(cvCanvas.width*0.4, 0); cvCtx.stroke();
+            cvCtx.beginPath(); cvCtx.moveTo(cvCanvas.width*0.8, cvCanvas.height); cvCtx.lineTo(cvCanvas.width*0.6, 0); cvCtx.stroke();
+
+            // Camera Header Text
+            cvCtx.fillStyle = '#38bdf8';
+            cvCtx.font = '12px monospace';
+            cvCtx.fillText(`[LIVE FEED: ${cvCamName}] — 60 FPS — YOLOv8 ACTIVE`, 15, 25);
+
+            if(showCvBoxes) {
+                // Bounding Box 1 (Pothole Anomaly)
+                cvCtx.strokeStyle = '#ef4444';
+                cvCtx.lineWidth = 2;
+                cvCtx.strokeRect(cvCanvas.width * 0.42, cvCanvas.height * 0.5, 90, 50);
+                cvCtx.fillStyle = '#ef4444';
+                cvCtx.fillRect(cvCanvas.width * 0.42, cvCanvas.height * 0.5 - 18, 120, 18);
+                cvCtx.fillStyle = '#000';
+                cvCtx.font = '10px monospace';
+                cvCtx.fillText('POTHOLE (98.4%)', cvCanvas.width * 0.42 + 4, cvCanvas.height * 0.5 - 5);
+
+                // Bounding Box 2 (Vehicle)
+                cvCtx.strokeStyle = '#10b981';
+                cvCtx.lineWidth = 1.5;
+                cvCtx.strokeRect(cvCanvas.width * 0.22, cvCanvas.height * 0.3, 70, 45);
+                cvCtx.fillStyle = '#10b981';
+                cvCtx.fillRect(cvCanvas.width * 0.22, cvCanvas.height * 0.3 - 16, 80, 16);
+                cvCtx.fillStyle = '#000';
+                cvCtx.fillText('VEHICLE', cvCanvas.width * 0.22 + 4, cvCanvas.height * 0.3 - 4);
+            }
+        }
+
+        function toggleCvBoundingBox() {
+            showCvBoxes = !showCvBoxes;
+            drawCvCanvas();
+        }
+
+        function changeCctvCamera(val) {
+            cvCamName = val;
+            drawCvCanvas();
+            logTerminal(`🎥 CCTV Feed switched to camera node: ${val}`);
+        }
+
+        // Action Triggers & Logging
         function logTerminal(msg) {
             const term = document.getElementById('terminalLog');
             const time = new Date().toLocaleTimeString();
@@ -797,24 +1036,24 @@
             mapPoints.push({ x: randomX, y: randomY, type: 'pothole', label: `Pothole #${newId}` });
             drawMap();
 
-            logTerminal(`⚠️ CV Detection: Pothole (Depth 6.8cm). Auto Work Order WO-#${newId}`);
+            logTerminal(`⚠️ CV Detection: Road Defect (Depth 6.8cm). Auto WO-#${newId}`);
 
             const table = document.getElementById('incidentTableBody');
             const row = table.insertRow(0);
-            row.setAttribute('onclick', `viewDetails('#INC-${newId}', 'Road Care', '28.614° N, 77.208° E', 'Auto-Detected Pothole')`);
+            row.setAttribute('onclick', `openDrawer('#INC-${newId}', 'Auto-Detected Pothole Defect', 'Coordinates: 28.614° N, 77.208° E\\nDepth: 6.8cm\\nSeverity: High\\nAI Confidence: 97.8%\\nDispatch Unit: Auto Work Order Created')`);
             row.innerHTML = `
                 <td>#INC-${newId}</td>
                 <td><span class="badge pothole">Road Care</span></td>
                 <td>28.614${newId/1000}° N, 77.208${newId/1000}° E</td>
                 <td>Depth: 6.8 cm | Auto-Detected</td>
                 <td><span style="color: var(--danger);">Pending Dispatch</span></td>
-                <td><button style="background:transparent; border:1px solid var(--border-color); color:var(--text-sub); padding:2px 8px; border-radius:4px; cursor:pointer;">Details</button></td>
+                <td><button class="btn-action" style="padding: 2px 8px; font-size:0.75rem; width:auto;">Inspect</button></td>
             `;
         }
 
         function triggerWasteEvent() {
-            logTerminal(`🗑️ Ultrasonic IoT Alert: Bin #104 exceeded 90% fill threshold.`);
-            logTerminal(`🚚 Collection Route calculated for Truck #12.`);
+            logTerminal(`🗑️ Ultrasonic Sensor Alert: Receptacle #12 exceeded 90% threshold.`);
+            logTerminal(`🚚 Collection Route updated via Dynamic Dijkstra AI.`);
             
             const randomX = Math.floor(Math.random() * (canvas.width - 60)) + 30;
             const randomY = Math.floor(Math.random() * (canvas.height - 60)) + 30;
@@ -827,61 +1066,86 @@
             const countEl = document.getElementById('val-corridors');
             countEl.innerText = parseInt(countEl.innerText) + 1;
 
-            logTerminal(`🚨 Priority 1 SOS: Ambulance Corridor Activated.`);
-            logTerminal(`🚦 Green Corridor Sync: 5 Traffic Signals Overridden.`);
+            logTerminal(`🚨 PRIORITY 1 SOS: Emergency Corridor Activated.`);
+            logTerminal(`🚦 Green Corridor Sync: Overriding 4 signals on Main Ave.`);
 
             const randomX = Math.floor(Math.random() * (canvas.width - 60)) + 30;
             const randomY = Math.floor(Math.random() * (canvas.height - 60)) + 30;
 
-            mapPoints.push({ x: randomX, y: randomY, type: 'emergency', label: `Ambulance SOS` });
+            mapPoints.push({ x: randomX, y: randomY, type: 'emergency', label: `Ambulance Priority` });
             drawMap();
         }
 
-        // Modals
-        function openCivicModal() {
-            document.getElementById('civicModal').style.display = 'flex';
+        // Waste Module Functions
+        function pollWasteSensors() {
+            document.getElementById('bin1-val').innerText = '98% FULL';
+            document.getElementById('bin1-bar').style.width = '98%';
+            document.getElementById('bin2-val').innerText = '82% FULL';
+            document.getElementById('bin2-bar').style.width = '82%';
+            logTerminal(`🗑️ Polled all 128 IoT waste bins. 2 bins flagged for collection.`);
         }
 
-        function closeCivicModal() {
-            document.getElementById('civicModal').style.display = 'none';
+        function optimizeWasteRoute() {
+            const log = document.getElementById('routeLog');
+            log.innerHTML += `<br>[${new Date().toLocaleTimeString()}] Dynamic Dijkstra Re-route calculated. Distance saved: 3.4 km.`;
+            log.scrollTop = log.scrollHeight;
         }
 
-        function openModal(text) {
-            document.getElementById('modalInfoBody').innerText = text;
-            document.getElementById('infoModal').style.display = 'flex';
+        // Signal Toggle Function
+        function toggleSignal(id) {
+            const btn = document.getElementById(id);
+            if(btn.innerText === 'FORCED GREEN') {
+                btn.innerText = 'AUTO CYCLING';
+                btn.className = 'switch-btn auto';
+            } else {
+                btn.innerText = 'FORCED GREEN';
+                btn.className = 'switch-btn override';
+            }
         }
 
-        function closeInfoModal() {
-            document.getElementById('infoModal').style.display = 'none';
+        // NLP Module Function
+        function runNlpEngine() {
+            const text = document.getElementById('nlpInput').value;
+            const cat = document.getElementById('nlpCat').value;
+            if(!text) return alert('Please enter issue description.');
+
+            const res = document.getElementById('nlpResult');
+            res.innerHTML = `[AI PARSING COMPLETE]\n--------------------------\nParsed Category: ${cat}\nIntent Confidence: 99.1%\nUrgency Score: 8.5 / 10\nDuplicate Probability: 11.2% (Unique)\n\nExtracted Payload:\n{\n  "category": "${cat}",\n  "text_summary": "${text.substring(0, 40)}...",\n  "status": "QUEUED_FOR_DISPATCH"\n}`;
+
+            logTerminal(`📢 Citizen Ticket Parsed: "${text.substring(0, 30)}..."`);
         }
 
-        function viewDetails(id, type, loc, metric) {
-            openModal(`INCIDENT DIAGNOSTIC REPORT\n---------------------------\nID: ${id}\nCategory: ${type}\nLocation: ${loc}\nTelemetry Metric: ${metric}\nAI Processing: Verified by Neural Network\nRecommended Action: Municipal Crew Auto-Routed`);
+        // API Key Generator
+        function generateApiKey() {
+            const newKey = "civi_live_sec4_" + Math.random().toString(36).substring(2, 15);
+            alert(`New API Token Generated:\n\n${newKey}\n\nToken synced across all local gateway nodes.`);
         }
 
-        function processNLPReport() {
-            const text = document.getElementById('issueText').value;
-            const cat = document.getElementById('issueCat').value;
-            if(!text) return alert('Please enter an issue description.');
+        // Drawer Modal Controls
+        let currentActiveDrawerId = null;
 
-            closeCivicModal();
-            logTerminal(`📢 NLP Processing: "${text.substring(0, 30)}..."`);
-            logTerminal(`⚡ Category: ${cat} | Deduplicated & Ticket Generated.`);
+        function openDrawer(id, title, content) {
+            currentActiveDrawerId = id;
+            document.getElementById('drawerTitle').innerText = title;
+            document.getElementById('drawerSub').innerText = `ID Tag: ${id}`;
+            document.getElementById('drawerContent').innerText = content;
+            document.getElementById('drawerOverlay').style.display = 'flex';
+        }
 
-            const newId = Math.floor(Math.random() * 800) + 100;
-            const table = document.getElementById('incidentTableBody');
-            const row = table.insertRow(0);
-            row.setAttribute('onclick', `viewDetails('#INC-${newId}', '${cat}', 'Citizen GPS Mobile Tag', '${text}')`);
-            row.innerHTML = `
-                <td>#INC-${newId}</td>
-                <td><span class="badge nlp">${cat}</span></td>
-                <td>Citizen GPS Tag</td>
-                <td>NLP Parsed Issue</td>
-                <td><span style="color: var(--accent);">Deduplicated</span></td>
-                <td><button style="background:transparent; border:1px solid var(--border-color); color:var(--text-sub); padding:2px 8px; border-radius:4px; cursor:pointer;">Details</button></td>
-            `;
+        function closeDrawer(e) {
+            if(e.target.id === 'drawerOverlay') {
+                document.getElementById('drawerOverlay').style.display = 'none';
+            }
+        }
 
-            document.getElementById('issueText').value = '';
+        function closeDrawerDirect() {
+            document.getElementById('drawerOverlay').style.display = 'none';
+        }
+
+        function resolveCurrentIncident() {
+            alert(`Incident ${currentActiveDrawerId} has been updated to RESOLVED in the database.`);
+            closeDrawerDirect();
+            logTerminal(`✓ Incident ${currentActiveDrawerId} marked as RESOLVED.`);
         }
     </script>
 </body>
